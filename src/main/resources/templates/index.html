@@ -1,0 +1,68 @@
+<html layout:decorate="~{layouts/layout}">
+  <main layout:fragment="contenido">
+    <div class="header">
+      <div class="left">
+        <h1>Dashboard</h1>
+      </div>
+    </div>
+
+    <ul class="insights">
+      <li>
+        <i class='bx bx-calendar-check'></i>
+        <span class="info">
+          <h3>1,074</h3>
+          <p>Prestamos Hechos</p>
+        </span>
+      </li>
+      <li>
+        <i class='bx bx-show-alt'></i>
+        <span class="info">
+          <h3>3,944</h3>
+          <p>Cantidad de Lectores</p>
+        </span>
+      </li>
+      <li>
+        <i class='bx bx-line-chart'></i>
+        <span class="info">
+          <h3>14,721</h3>
+          <p>Libros Totales</p>
+        </span>
+      </li>
+    </ul>
+
+    <div class="bottom-data">
+      <div class="orders">
+        <div class="header">
+          <i class='bx bx-receipt'></i>
+          <h3>Prestamos Recientes</h3>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Fecha Limite</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><p>Juan Perez</p></td>
+              <td>14-08-2025</td>
+              <td><span class="status completed">Devuelto</span></td>
+            </tr>
+            <tr>
+              <td><p>Juan Perez</p></td>
+              <td>14-08-2025</td>
+              <td><span class="status pending">Pendiente</span></td>
+            </tr>
+            <tr>
+              <td><p>Juan Perez</p></td>
+              <td>14-08-2025</td>
+              <td><span class="status completed">Devuelto</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</html>

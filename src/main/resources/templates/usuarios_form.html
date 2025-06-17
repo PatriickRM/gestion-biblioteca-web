@@ -1,0 +1,40 @@
+<html layout:decorate="~{layouts/layout}">
+
+<main layout:fragment="contenido">
+       <h1 class="cambio" th:text="${usuario.id_usuario == 0} ? 'Registrar Usuario' : 'Editar Usuario'"></h1>
+
+    <form th:action="@{${usuario.id_usuario == 0} ? '/usuarios/registrar' : '/usuarios/editar'}"
+          th:object="${usuario}" method="post" class="form-panel">
+
+        <input type="hidden" th:field="*{id_usuario}" />
+
+        <label>Nombres:</label>
+        <input type="text" th:field="*{nombre}" required />
+
+        <label>Apellidos:</label>
+        <input type="text" th:field="*{apellido}" required />
+
+        <label>DNI:</label>
+        <input type="text" th:field="*{dniuser}" required />
+
+        <label>Correo:</label>
+        <input type="email" th:field="*{correouser}" required />
+
+        <label>Teléfono:</label>
+        <input type="text" th:field="*{telefonouser}" required />
+
+        <label>Tipo:</label>
+        <select th:field="*{tipo_user}">
+            <option value="Estudiante">Estudiante</option>
+            <option value="Docente">Docente</option>
+            <option value="Investigador">Investigador</option>
+            <option value="Universitario">Universitario</option>
+        </select>
+
+        <div class="form-actions">
+            <button type="submit" class="status pending">Guardar</button>
+            <a th:href="@{/usuarios}" class="cancelar">Cancelar</a>
+        </div>
+    </form>
+</main>
+</html>

@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+    <title layout:title-pattern="Layout ">Biblioteca</title>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="#" class="logo">
+        <i class='bx bx-book-open'></i>
+        <div class="logo-name"><span>Mi</span>Biblioteca</div>
+    </a>
+    <ul class="side-menu">
+        <li><a th:href="@{/index}"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+        <li><a th:href="@{/usuarios}"><i class='bx bx-group'></i>Usuarios</a></li>
+        <li><a href="#"><i class='bx bxs-book'></i>Libros</a></li>
+        <li><a href="#"><i class='bx bx-transfer'></i>Prestamos</a></li>
+        <li><a href="#"><i class='bx bx-bookmark'></i>Reservas</a></li>
+        <li><a href="#"><i class='bx bx-cog'></i>Configuracion</a></li>
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a th:href="@{/logout}" class="logout">
+                <i class='bx bx-log-out-circle'></i>
+                Salir
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- Content -->
+<div class="content">
+    <!-- Navbar -->
+    <nav>
+        <i class='bx bx-menu'></i>
+        <span style="flex:1"></span>
+        <i class='bx bxs-moon cambio'></i>
+        <input type="checkbox" id="theme-toggle" hidden />
+        <label for="theme-toggle" class="theme-toggle"></label>
+        <span class="notif cambio">Administrador</span>
+        <a href="#" class="profile">
+            <img th:src="@{/images/admin.png}" alt="Logo" />
+        </a>
+    </nav>
+
+    <!-- Main content -->
+	<main layout:fragment="contenido">
+	</main>
+</div>
+
+<script th:src="@{/js/index.js}"></script>
+</body>
+</html>
