@@ -1,0 +1,77 @@
+<html layout:decorate="~{layouts/layout}">
+  <main layout:fragment="contenido">
+    <div class="header">
+      <div class="left">
+        <h1>Gestion de Libros</h1>
+		<p>
+		  <a th:href="@{/libros/nuevo}" class="status pending">Nuevo Usuario +</a>
+		</p>
+      </div>
+    </div>
+
+
+    <div class="bottom-data">
+      <div class="orders">
+        <div class="header">
+          <i class='bx bx-group'></i>
+          <h3>Lista de Libros</h3>
+        </div>
+        <table class="tabla-libros">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Titulo</th>
+              <th>Autor</th>
+              <th>Categoria</th>
+              <th>Editorial</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="l : ${libros}">
+              <td th:text="${l.idLibro}"></td>
+              <td th:text="${l.titulo}"></td>
+              <td th:text="${l.autor.nombre}"></td>
+              <td th:text="${l.categoria.nombre_categoria}"></td>
+              <td th:text="${l.editorial}"></td>    
+              <td th:text="${l.estado}"></td>
+              <td>
+                <a href="javascript:void(0);" th:onclick="'mostrarDetallesLibro(' + ${l.idLibro} + ')'" class="bx bxs-info-circle" style="color:#3f912e"></a>
+                <a th:href="@{/libros/editar/{id}(id=${l.idLibro})}"class='bx bxs-edit amarillo'></a>
+                <a th:href="@{/libros/eliminar/{id}(id=${l.idLibro})}" class='bx bxs-trash rojo'
+                   onclick="return confirm('¿Eliminar este libro?')"></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="modalLibro" class="modal" style="display:none;">
+    <div class="modal-content">
+    <span class="close" onclick="cerrarModalLibro()">&times;</span>
+    <h2>Detalles del Libro</h2>
+    <div class="modal-body">
+  <!-- Imagen -->
+  <div class="modal-img">
+    <img id="detalleImagen" src="" alt="Foto del Libro" style="max-width: 150px"/>
+
+  </div>
+
+  <!-- Información del usuario -->
+  <div class="modal-info">
+    <p><strong>ID:</strong> <span id="detalleIdLibro"></span></p>
+    <p><strong>Titulo:</strong> <span id="detalleTitulo"></span></p>
+    <p><strong>Autor:</strong> <span id="detalleAutor"></span></p>
+    <p><strong>Categoria:</strong> <span id="detalleCategoria"></span></p>
+    <p><strong>Editorial:</strong> <span id="detalleEditorial"></span></p>
+    <p><strong>Año Publicacion:</strong> <span id="detalleAnioPublicacion"></span></p>
+    <p><strong>Estado:</strong> <span id="detalleEstado"></span></p>
+    <p><strong>ISBN:</strong> <span id="detalleISBN"></span></p>
+    </div>
+    </div>
+    </div>
+  </div>
+  </main>
+<script th:src="@{/js/index.js}"></script>
+</html>

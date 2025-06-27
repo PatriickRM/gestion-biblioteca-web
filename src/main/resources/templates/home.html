@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MiBiblioteca - Inicio</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="logo">
+            <img src="/images/libritos.png" alt="MiBiblioteca">
+            <span>MiBiblioteca</span>
+        </div>
+        <div class="user-info">
+            <img src="/images/user-avatar.png" alt="Usuario">
+            <span th:text="${usuario.nombres + ' ' + usuario.apellidos}"></span>
+            <div class="notification">
+                <i class="fa fa-bell"></i>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="main">
+        <!-- FILTROS -->
+        <aside class="sidebar">
+            <h3>Filtro de Búsqueda</h3>
+            <label>Año</label>
+            <input type="text">
+            <label>Autor</label>
+            <input type="text">
+            <label>Editorial</label>
+            <input type="text">
+            <label>Categoría</label>
+            <input type="text">
+            <label>Buscar por nombre</label>
+            <input type="text">
+            <button>Buscar</button>
+        </aside>
+
+        <!-- LIBROS -->
+        <div class="book-grid">
+            <div th:each="libro : ${libros}" class="book-card">
+                <img th:src="@{/images/{img}(img=${libro.imagen})}" alt="Portada del libro">
+                <h3 th:text="${libro.titulo}">Título</h3>
+                <div class="stars">
+                    <i class="fa fa-star"></i> 
+                </div>
+                <a th:href="@{'/libros/' + ${libro.idLibro}}">
+                <button>Ver más</butto>
+                </a>
+            </div>
+        </div>
+        </section>
+    </div>
+    <div class="pagination">
+    <a th:if="${currentPage > 0}" th:href="@{/home(page=${currentPage - 1})}">Anterior</a>
+    
+    <span th:text="'Página ' + ${currentPage + 1} + ' de ' + ${totalPages}"></span>
+
+    <a th:if="${currentPage + 1 < totalPages}" th:href="@{/home(page=${currentPage + 1})}">Siguiente</a>
+    </div>
+    <!-- FOOTER -->
+    <footer>
+        <div class="social-icons">
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-youtube"></i>
+        </div>
+        <div class="locations">
+            <p>Direcciones: Av. Central 123 - Lima, Sucursal: Av. Norte 456 - Arequipa</p>
+        </div>
+        <div>
+            <p>&copy; 2025 MiBiblioteca. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

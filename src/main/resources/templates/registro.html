@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" th:href="@{/css/login.css}" />
+</head>
+<body class="dark">
+  <div class="login-container">
+    <a href="#" class="logo">
+      <i class='bx bx-book-open'></i>
+      <div class="logo-name"><span>Mi</span>Biblioteca</div>
+    </a>
+
+    <h2>Crear Cuenta</h2>
+	<form class="login-form" method="post" th:action="@{/usuarios/registro}" th:object="${usuario}">
+		<div class="form-row">
+		  <div class="form-group">
+		    <label for="nombres">Nombres</label>
+		    <input type="text" th:field="*{nombres}" required>
+		  </div>
+		  <div class="form-group">
+		    <label for="apellidos">Apellidos</label>
+		    <input type="text" th:field="*{apellidos}" required>
+		  </div>
+		</div>
+
+		<div class="form-row">
+		  <div class="form-group">
+		    <label for="dni">DNI</label>
+		    <input type="text" pattern="\d{8}" maxlength="8" th:field="*{dni}" required>
+		  </div>
+		  <div class="form-group">
+		    <label for="telefono">Teléfono</label>
+		    <input type="tel" pattern="\d{9}" maxlength="9" th:field="*{telefono}" required>
+		  </div>
+		</div>
+
+		<div class="form-group">
+		  <label for="correo">Correo electrónico</label>
+		  <input type="email" th:field="*{correo}" required>
+		</div>
+
+		<div class="form-group">
+		  <label for="username">Nombre de usuario</label>
+		  <input type="text" th:field="*{username}" required>
+		</div>
+
+		<div class="form-group">
+		  <label for="password">Contraseña</label>
+		  <input type="password" th:field="*{password}" required>
+		</div>
+
+	     <button type="submit" class="btn-login">Registrarse</button>
+	   </form>
+    <div class="login-footer">
+      ¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión</a>
+    </div>
+  </div>
+</body>
+</html>

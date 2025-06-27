@@ -1,107 +1,116 @@
 package com.webapp.biblioteca.springboot_webapp.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuarios")
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_usuario;
-    @Column(name = "nombres")
-    private String nombre;
-    @Column(name = "apellidos")
-    private String apellido;
-    @Column(name = "dni")
-    private String dniuser;
-    @Column(name = "correo")
-    private String correouser;
-    @Column(name = "telefono")
-    private String telefonouser;
-    @Column(name = "tipo_usuario")
-    private String tipo_user;
-    
+    @Column(name = "id_usuario")
+    private int idUsuario;
+    private String nombres;
+    private String apellidos;
+    @Column(unique = true, length = 8)
+    private String dni;
+    @Column(unique = true)
+    private String correo;
+    private String telefono;
+    @Column(unique = true)
+    private String username;
 
+    private String password;
 
+    @ManyToOne
+    @JoinColumn(name = "id_rol")
+    private Roles rol;
+
+    // Constructor vacío
     public Usuario() {
     }
 
-    public Usuario(int id_usuario, String nombre, String apellido, String dniuser, String correouser, String telefonouser, String tipo_user) {
-        this.id_usuario = id_usuario;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dniuser = dniuser;
-        this.correouser = correouser;
-        this.telefonouser = telefonouser;
-        this.tipo_user = tipo_user;
+    // Constructor completo
+    public Usuario(int idUsuario, String nombres, String apellidos, String dni, String correo,String telefono, String username, String password, Roles rol) {
+        this.idUsuario = idUsuario;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.dni = dni;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.username = username;
+        this.password = password;
+        this.rol = rol;
     }
 
-    public int getId_usuario() {
-        return id_usuario;
+    // Getters y Setters
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    public String getDniuser() {
-        return dniuser;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setDniuser(String dniuser) {
-        this.dniuser = dniuser;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
-    public String getCorreouser() {
-        return correouser;
+    public String getDni() {
+        return dni;
     }
 
-    public void setCorreouser(String correouser) {
-        this.correouser = correouser;
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
-    public String getTelefonouser() {
-        return telefonouser;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setTelefonouser(String telefonouser) {
-        this.telefonouser = telefonouser;
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+    public String getTelefono() {
+        return telefono;
+    }
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    public String getTipo_user() {
-        return tipo_user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setTipo_user(String tipo_user) {
-        this.tipo_user = tipo_user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    
-    public String getNombre() {
-        return nombre;
+    public String getPassword() {
+        return password;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-   @Override
-    public String toString() {
-        return "Usuario [id_usuario=" + id_usuario + ", nombre=" + nombre + ", apellido=" + apellido + ", dniuser="
-                + dniuser + ", correouser=" + correouser + ", telefonouser=" + telefonouser + ", tipo_user=" + tipo_user
-                + "]";
+    public Roles getRol() {
+        return rol;
     }
-    
+
+    public void setRol(Roles rol) {
+        this.rol = rol;
+    }
 }

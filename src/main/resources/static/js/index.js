@@ -43,12 +43,13 @@ function mostrarDetalles(id) {
     fetch(`/usuarios/detalles-json/${id}`)
         .then(response => response.json())
         .then(usuario => {
-            document.getElementById("detalleId").textContent = usuario.id_usuario;
-            document.getElementById("detalleNombre").textContent = usuario.nombre + " " + usuario.apellido;
-            document.getElementById("detalleDni").textContent = usuario.dniuser;
-            document.getElementById("detalleCorreo").textContent = usuario.correouser;
-            document.getElementById("detalleTelefono").textContent = usuario.telefonouser;
-            document.getElementById("detalleTipo").textContent = usuario.tipo_user;
+            document.getElementById("detalleId").textContent = usuario.idUsuario;
+            document.getElementById("detalleNombre").textContent = usuario.nombres + " " + usuario.apellidos;
+            document.getElementById("detalleDni").textContent = usuario.dni;
+            document.getElementById("detalleCorreo").textContent = usuario.correo;
+            document.getElementById("detalleTelefono").textContent = usuario.telefono;
+            document.getElementById("detalleTipo").textContent = usuario.rol.nombreRol;
+            document.getElementById("detalleUsername").textContent = usuario.username;
             document.getElementById("modalUsuario").style.display = "block";
         });
 }
@@ -56,3 +57,27 @@ function mostrarDetalles(id) {
 function cerrarModal() {
     document.getElementById("modalUsuario").style.display = "none";
 }
+
+function mostrarDetallesLibro(id) {
+    fetch(`/libros/detalles-json-libro/${id}`)
+        .then(response => response.json())
+        .then(libro => {
+            document.getElementById("detalleIdLibro").textContent = libro.idLibro;
+            document.getElementById("detalleTitulo").textContent = libro.titulo;
+            document.getElementById("detalleAutor").textContent = libro.autor.nombre;
+            document.getElementById("detalleCategoria").textContent = libro.categoria.nombre_categoria;
+            document.getElementById("detalleEditorial").textContent = libro.editorial;
+            document.getElementById("detalleAnioPublicacion").textContent = libro.anio_publicacion;
+            document.getElementById("detalleEstado").textContent = libro.estado;
+            document.getElementById("detalleISBN").textContent = libro.isbn;
+            document.getElementById("detalleImagen").src = "/images/" + libro.imagen;
+            
+            document.getElementById("modalLibro").style.display = "block";
+        });
+}
+
+function cerrarModalLibro() {
+    document.getElementById("modalLibro").style.display = "none";
+  }
+
+  

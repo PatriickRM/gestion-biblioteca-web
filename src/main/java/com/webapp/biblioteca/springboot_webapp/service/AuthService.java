@@ -1,8 +1,9 @@
 package com.webapp.biblioteca.springboot_webapp.service;
 
-import com.webapp.biblioteca.springboot_webapp.models.Trabajador;
+
+import com.webapp.biblioteca.springboot_webapp.models.Usuario;
 
 public interface AuthService {
-    Trabajador login(String correo, String clavePlano);
+    Usuario login(String usuario, String clavePlano);
     String encriptarClave(String clave);
 }

@@ -3,72 +3,69 @@
     <div class="header">
       <div class="left">
         <h1>Gestion de Usuarios</h1>
-		<p>
-		  <a th:href="@{/usuarios/nuevo}" class="status pending">Nuevo Usuario +</a>
-		</p>
-      </div>
-    </div>
-
-
-    <div class="bottom-data">
-      <div class="orders">
-        <div class="header">
-          <i class='bx bx-group'></i>
-          <h3>Lista de Usuarios</h3>
+		  <p><a th:href="@{/usuarios/nuevo}" class="status pending">Nuevo Usuario +</a></p>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre y Apellidos</th>
-              <th>DNI</th>
-              <th>Correo</th>
-              <th>Teléfono</th>
-              <th>Tipo</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="u : ${usuarios}">
-              <td th:text="${u.id_usuario}"></td>
-              <td th:text="${u.nombre + ' ' + u.apellido}"></td>
-              <td th:text="${u.dniuser}"></td>
-              <td th:text="${u.correouser}"></td>
-              <td th:text="${u.telefonouser}"></td>
-              <td th:text="${u.tipo_user}"></td>
-              <td>
-                <a href="javascript:void(0);" th:onclick="'mostrarDetalles(' + ${u.id_usuario} + ')'" class="bx bxs-info-circle" style="color:#3f912e"></a>
-                <a th:href="@{/usuarios/editar/{id}(id=${u.id_usuario})}"class='bx bxs-edit amarillo'></a>
-                <a th:href="@{/usuarios/eliminar/{id}(id=${u.id_usuario})}" class='bx bxs-trash rojo'
-                   onclick="return confirm('¿Eliminar este usuario?')"></a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
-    <div id="modalUsuario" class="modal" style="display:none;">
-    <div class="modal-content">
-    <span class="close" onclick="cerrarModal()">&times;</span>
-    <h2>Detalles del Usuario</h2>
-    <div class="modal-body">
-  <!-- Imagen -->
-  <div class="modal-img">
-    <img th:src="@{/images/usuario.png}" alt="Foto del Usuario" />
-  </div>
+    <div class="bottom-data">
+        <div class="orders">
+            <div class="header">
+                <i class='bx bx-group'></i>
+                <h3>Lista de Usuarios</h3>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre y Apellidos</th>
+                    <th>DNI</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="u : ${usuarios}">
+                    <td th:text="${u.idUsuario}"></td>
+                    <td th:text="${u.nombres + ' ' + u.apellidos}"></td>
+                    <td th:text="${u.dni}"></td>
+                    <td th:text="${u.correo}"></td>
+                    <td th:text="${u.telefono}"></td>
+                    <td th:text="${u.rol.nombreRol}"></td>
+                    <td>
+                        <a href="javascript:void(0);" th:onclick="'mostrarDetalles(' + ${u.idUsuario} + ')'" class="bx bxs-info-circle" style="color:#3f912e"></a>
+                        <a th:href="@{/usuarios/editar/{id}(id=${u.idUsuario})}" class='bx bxs-edit amarillo'></a>
+                        <a th:href="@{/usuarios/eliminar/{id}(id=${u.idUsuario})}" class='bx bxs-trash rojo'
+                           onclick="return confirm('¿Eliminar este usuario?')"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-  <!-- Información del usuario -->
-  <div class="modal-info">
-    <p><strong>ID:</strong> <span id="detalleId"></span></p>
-    <p><strong>Nombre Completo:</strong> <span id="detalleNombre"></span></p>
-    <p><strong>DNI:</strong> <span id="detalleDni"></span></p>
-    <p><strong>Correo:</strong> <span id="detalleCorreo"></span></p>
-    <p><strong>Teléfono:</strong> <span id="detalleTelefono"></span></p>
-    <p><strong>Tipo:</strong> <span id="detalleTipo"></span></p>
+    <div id="modalUsuario" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2>Detalles del Usuario</h2>
+            <div class="modal-body">
+                <div class="modal-img">
+                    <img th:src="@{/images/usuario.png}" alt="Foto del Usuario" />
+                </div>
+                <div class="modal-info">
+                    <p><strong>ID:</strong> <span id="detalleId"></span></p>
+                    <p><strong>Nombre Completo:</strong> <span id="detalleNombre"></span></p>
+                    <p><strong>DNI:</strong> <span id="detalleDni"></span></p>
+                    <p><strong>Correo:</strong> <span id="detalleCorreo"></span></p>
+                    <p><strong>Teléfono:</strong> <span id="detalleTelefono"></span></p>
+                    <p><strong>Username:</strong> <span id="detalleUsername"></span></p>
+                    <p><strong>Rol:</strong> <span id="detalleTipo"></span></p>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
-    </div>
-  </div>
-  </main>
+</main>
+
 <script th:src="@{/js/index.js}"></script>
+</body>
 </html>

@@ -11,5 +11,5 @@ public interface UsuarioService {
     void EliminarUsuario(Usuario usuario);
     Usuario BuscarUsuarioPorId(Integer id);
     List<Usuario> ListarUsuarios();
-    
+    Usuario buscarPorUsername(String username);
 }

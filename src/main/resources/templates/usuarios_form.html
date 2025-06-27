@@ -1,40 +1,44 @@
 <html layout:decorate="~{layouts/layout}">
-
 <main layout:fragment="contenido">
-       <h1 class="cambio" th:text="${usuario.id_usuario == 0} ? 'Registrar Usuario' : 'Editar Usuario'"></h1>
+  <h1 class="cambio" th:text="${usuario.idUsuario == 0} ? 'Registrar Usuario' : 'Editar Usuario'"></h1>
 
-    <form th:action="@{${usuario.id_usuario == 0} ? '/usuarios/registrar' : '/usuarios/editar'}"
-          th:object="${usuario}" method="post" class="form-panel">
+  <form th:action="@{${usuario.idUsuario == 0} ? '/usuarios/registrar' : '/usuarios/editar'}"
+        th:object="${usuario}" method="post" class="form-panel">
 
-        <input type="hidden" th:field="*{id_usuario}" />
+    <input type="hidden" th:field="*{idUsuario}" />
 
-        <label>Nombres:</label>
-        <input type="text" th:field="*{nombre}" required />
+    <label>Nombres:</label>
+    <input type="text" th:field="*{nombres}" required />
 
-        <label>Apellidos:</label>
-        <input type="text" th:field="*{apellido}" required />
+    <label>Apellidos:</label>
+    <input type="text" th:field="*{apellidos}" required />
 
-        <label>DNI:</label>
-        <input type="text" th:field="*{dniuser}" required />
+    <label>DNI:</label>
+    <input type="text" th:field="*{dni}" required />
 
-        <label>Correo:</label>
-        <input type="email" th:field="*{correouser}" required />
+    <label>Correo:</label>
+    <input type="email" th:field="*{correo}" required />
 
-        <label>Teléfono:</label>
-        <input type="text" th:field="*{telefonouser}" required />
+    <label>Teléfono:</label>
+    <input type="text" th:field="*{telefono}" required />
 
-        <label>Tipo:</label>
-        <select th:field="*{tipo_user}">
-            <option value="Estudiante">Estudiante</option>
-            <option value="Docente">Docente</option>
-            <option value="Investigador">Investigador</option>
-            <option value="Universitario">Universitario</option>
-        </select>
+    <label>Nombre de Usuario:</label>
+    <input type="text" th:field="*{username}" required />
+    
+    <label>Contraseña:</label>
+    <input type="password" th:field="*{password}"
+       th:placeholder="${usuario.idUsuario != 0} ? 'Dejar vacío para no cambiar' : 'Ingrese una contraseña'" />
 
-        <div class="form-actions">
-            <button type="submit" class="status pending">Guardar</button>
-            <a th:href="@{/usuarios}" class="cancelar">Cancelar</a>
-        </div>
-    </form>
+    <label>Rol:</label>
+    <select th:field="*{rol}">
+    <option value="">Seleccione un rol</option>
+    <option th:each="r : ${roles}" th:value="${r.idRol}" th:text="${r.nombreRol}"></option>
+    </select>
+
+    <div class="form-actions">
+      <button type="submit" class="status pending">Guardar</button>
+      <a th:href="@{/usuarios}" class="cancelar">Cancelar</a>
+    </div>
+  </form>
 </main>
 </html>

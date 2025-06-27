@@ -17,34 +17,43 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService,
-                          PasswordEncoder passwordEncoder) {
+    // Constructor para inyectar dependencias
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder) {
         this.customUserDetailsService = customUserDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Bean
+    // Configuración del DaoAuthenticationProvider
+      @Bean
     public DaoAuthenticationProvider authProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customUserDetailsService);
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 
+    // Configuración de la cadena de filtros de seguridad
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .formLogin(form -> form
-                .loginPage("/login")
-                .loginProcessingUrl("/api/auth/login")
-                .defaultSuccessUrl("/index", true)
+                .loginPage("/login")                         
+                .loginProcessingUrl("/api/auth/login")       
+                .defaultSuccessUrl("/index", true)  
+                .failureUrl("/login?error=true")  
                 .permitAll()
             )
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout=true")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+            )
             .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/","/css/**", "/js/**", "/images/**", "/login","/webjars/**", "/api/auth/login").permitAll()
-            .requestMatchers("/usuarios/**").hasRole("ADMIN") 
-            .anyRequest().authenticated()
+                .requestMatchers("/", "/index", "/css/**", "/js/**", "/images/**", "/webjars/**", "/login","/usuarios/registro").permitAll()
+                .requestMatchers("/usuarios/**","/libros/**").hasRole("ADMIN")
+                .requestMatchers("/lector/**").hasRole("LECTOR")
+                .anyRequest().authenticated()
             );
 
         return http.build();

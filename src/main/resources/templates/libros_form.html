@@ -1,0 +1,52 @@
+<html layout:decorate="~{layouts/layout}">
+
+<main layout:fragment="contenido">
+    <h1 class="cambio" th:text="${libro.idLibro == 0} ? 'Registrar Libro' : 'Editar Libro'"></h1>
+
+    <form th:action="@{${formAction}}" th:object="${libro}" method="post" enctype="multipart/form-data" class="form-panel">
+
+        <input type="hidden" th:field="*{idLibro}" />
+
+        <label>Título:</label>
+        <input type="text" th:field="*{titulo}" required />
+
+        <label>Autor:</label>
+        <select th:field="*{autor}">
+            <option th:each="autor : ${listaAutores}"
+                    th:value="${autor.id_autor}"
+                    th:text="${autor.nombre}">Autor</option>
+        </select>
+
+        <label>Categoría:</label>
+        <select th:field="*{categoria.id_categoria}">
+            <option th:each="c : ${categorias}"
+                    th:value="${c.id_categoria}"
+                    th:text="${c.nombre_categoria}">Categoría</option>
+        </select>
+
+        <label>Editorial:</label>
+        <input type="text" th:field="*{editorial}" required />
+
+        <label>Año de Publicación:</label>
+        <input type="number" th:field="*{anio_publicacion}" required />
+
+        <label>ISBN:</label>
+        <input type="text" th:field="*{isbn}" required />
+
+        <label>Estado:</label>
+        <select th:field="*{estado}">
+            <option value="Disponible">Disponible</option>
+            <option value="Prestado">Prestado</option>
+            <option value="Reservado">Reservado</option>
+        </select>
+
+        <label>Imagen (archivo):</label>
+        <input type="file" name="imagenFile" accept="image/*" />
+
+        <div class="form-actions">
+            <button type="submit" class="status pending">Guardar</button>
+            <a th:href="@{/libros}" class="cancelar">Cancelar</a>
+        </div>
+    </form>
+</main>
+</html>

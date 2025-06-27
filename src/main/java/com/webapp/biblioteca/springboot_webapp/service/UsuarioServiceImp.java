@@ -13,6 +13,7 @@ public class UsuarioServiceImp implements UsuarioService {
     //Aplicar inyeccion de dependencias
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
 
     @Override
     public void RegistrarUsuario(Usuario usuario) {
@@ -26,7 +27,7 @@ public class UsuarioServiceImp implements UsuarioService {
 
     @Override
     public void EliminarUsuario(Usuario usuario) {
-        usuarioRepository.deleteById(usuario.getId_usuario());
+        usuarioRepository.deleteById(usuario.getIdUsuario());
     }
 
     @Override
@@ -37,6 +38,11 @@ public class UsuarioServiceImp implements UsuarioService {
     @Override
     public List<Usuario> ListarUsuarios() {
         return (List<Usuario>) usuarioRepository.findAll();
+    }
+
+    @Override
+    public Usuario buscarPorUsername(String username) {
+        return usuarioRepository.findByUsername(username);
     }
 
     
