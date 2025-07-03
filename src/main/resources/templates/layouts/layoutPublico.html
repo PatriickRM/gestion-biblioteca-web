@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	    <link rel="stylesheet" th:href="@{/css/home.css}" >
+	    <title>MiBiblioteca</title>
+</head>
+<body>
+
+    <div class="top-container">
+
+        <div class="nav">
+    <div class="logo">
+        <i class='bx bx-book-open'></i>
+        <a href="#">MiBiblioteca</a>
+    </div>
+
+	<div class="nav-links">
+		    <a th:href="@{/home}">Inicio</a>
+		    <a th:href="@{/eventos}">Eventos</a>
+		    <a th:href="@{/preguntas}">Preguntas Frecuentes</a>
+		    <a th:href="@{/contacto}">Contacto</a>
+		    <a th:href="@{/condiciones}">Condiciones</a>
+		</div>
+
+    <div class="right-section">
+        <i class='bx bx-bell'>
+            <span class="notification-badge">3</span>
+        </i>
+
+        <div class="profile">
+            <div class="info">
+                <img th:src="@{/images/user-avatar.png}" alt="Perfil">
+                <div>
+                    <p th:text="${usuario.nombres} +' '+${usuario.apellidos}">Nombre</p>
+                    <p th:text="${usuario.rol.nombreRol}">Rol</p>
+                </div>
+            </div>
+            <i class='bx bx-chevron-down'></i>
+            <div class="profile-dropdown">
+                <a href="#">Mi perfil</a>
+                <a href="#">Mis préstamos</a>
+                <a th:href="@{/logout}">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" th:classappend="${extraClass}" layout:fragment="contenido">
+    <!-- contenido -->
+</div>
+    </div>
+   
+
+    <footer class="site-footer">
+    <div class="footer-left">
+        <i class='bx bx-book-open'></i>
+        <p>MiBiblioteca<br><span class="location">Av. Procéres de la Independencia 444 - SJL</span></p>
+    </div>
+    <div class="footer-center">
+        © 2025 MiBiblioteca. Todos los derechos reservados.
+    </div>
+    <div class="footer-right">
+        <a href="#"><i class='bx bxl-facebook'></i></a>
+        <a href="#"><i class='bx bxl-twitter'></i></a>
+        <a href="#"><i class='bx bxl-instagram'></i></a>
+    </div>
+</footer>
+
+<script th:src="@{/js/home.js}"></script>
+
+</body>
+</html>

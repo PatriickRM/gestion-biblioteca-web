@@ -2,6 +2,7 @@ package com.webapp.biblioteca.springboot_webapp.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "resena")
@@ -80,4 +81,10 @@ public class Resena {
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
+    
+    public String getFechaFormateada() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return fecha.format(formatter);
+    }
+
 }

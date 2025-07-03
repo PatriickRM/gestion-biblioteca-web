@@ -1,5 +1,6 @@
 package com.webapp.biblioteca.springboot_webapp.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,6 +15,8 @@ import com.webapp.biblioteca.springboot_webapp.service.CustomUserDetailsService;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private RedireccionConfig redireccionConfig;
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
 
@@ -39,7 +42,7 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/login")                         
                 .loginProcessingUrl("/api/auth/login")       
-                .defaultSuccessUrl("/index", true)  
+                .successHandler(redireccionConfig) 
                 .failureUrl("/login?error=true")  
                 .permitAll()
             )
@@ -50,7 +53,7 @@ public class SecurityConfig {
                 .deleteCookies("JSESSIONID")
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/index", "/css/**", "/js/**", "/images/**", "/webjars/**", "/login","/usuarios/registro").permitAll()
+                .requestMatchers("/", "/index", "/css/**", "/js/**", "/images/**", "/webjars/**", "/login","/usuarios/registro","/libros/**").permitAll()
                 .requestMatchers("/usuarios/**","/libros/**").hasRole("ADMIN")
                 .requestMatchers("/lector/**").hasRole("LECTOR")
                 .anyRequest().authenticated()

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.webapp.biblioteca.springboot_webapp.models.Libro;
+import com.webapp.biblioteca.springboot_webapp.models.Resena;
+import com.webapp.biblioteca.springboot_webapp.models.Usuario;
 import com.webapp.biblioteca.springboot_webapp.service.AutorService;
 import com.webapp.biblioteca.springboot_webapp.service.CategoriaService;
 import com.webapp.biblioteca.springboot_webapp.service.LibroService;
+import com.webapp.biblioteca.springboot_webapp.service.ResenaService;
+import com.webapp.biblioteca.springboot_webapp.service.UsuarioService;
+
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -35,7 +42,12 @@ public class LibroController {
     private CategoriaService categoriaService;
     @Autowired
     private AutorService autorService;
-    
+    @Autowired
+    private ResenaService resenaService;
+    @Autowired
+    private UsuarioService usuarioService;
+
+
     @GetMapping("/listar")
     public String listarLibros(Model model) {
         List<Libro> libros = libroService.listarLibros();
@@ -128,5 +140,36 @@ public class LibroController {
     @ResponseBody
     public Libro obtenerDetallesLibro(@PathVariable("id") Integer id) {
         return libroService.buscarLibroPorId(id);
+    }
+
+    // Ver Detalle Libro Y RESEÑAS
+    @GetMapping("/{id}")
+    public String verDetalleLibro(@PathVariable("id") int id, Model model, Principal principal) {
+        Libro libro = libroService.buscarLibroPorId(id);
+        if (libro == null) {
+            return "redirect:/home";
+        }
+
+        List<Resena> resenas = resenaService.obtenerResenasPorLibro(id);
+        model.addAttribute("libro", libro);
+        model.addAttribute("resenas", resenas);
+        model.addAttribute("nuevaResena", new Resena());
+
+        if (principal != null) {
+            Usuario usuario = usuarioService.buscarPorUsername(principal.getName());
+            model.addAttribute("usuario", usuario);
+        }
+        model.addAttribute("extraClass", "detalle-libro");
+        
+        return "libro-detalle"; 
+    }
+
+    @PostMapping("/{id}/resena")
+    public String guardarResena(@PathVariable("id") int id,@ModelAttribute("nuevaResena") Resena resena, Principal principal) {
+        Usuario usuario = usuarioService.buscarPorUsername(principal.getName());
+        resena.setUsuario(usuario);
+        resena.setLibro(libroService.buscarLibroPorId(id));
+        resenaService.guardarResena(resena);
+        return "redirect:/libros/" + id;
     }
 }

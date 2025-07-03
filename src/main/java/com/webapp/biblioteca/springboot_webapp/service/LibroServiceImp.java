@@ -46,6 +46,29 @@ public class LibroServiceImp implements LibroService {
        return libroRepository.findAll(pageable);
     }
 
-    
+    @Override
+    public List<Integer> obtenerAniosPublicacion() {
+        return libroRepository.obtenerAniosPublicacion();
+    }
+
+    @Override
+    public List<String> obtenerAutores() {
+       return libroRepository.obtenerAutores();
+    }
+
+    @Override
+    public List<String> obtenerEditoriales() {
+        return libroRepository.obtenerEditoriales();
+    }
+
+    @Override
+    public List<String> obtenerCategorias() {
+        return libroRepository.obtenerCategorias();
+    }
+
+    @Override
+    public Page<Libro> buscarConFiltros(Integer year, String author, String editorial, String categoria, String nombre, Pageable pageable) {
+        return libroRepository.buscarConFiltros(year, author, editorial, categoria, nombre, pageable);
+    }
 
 }

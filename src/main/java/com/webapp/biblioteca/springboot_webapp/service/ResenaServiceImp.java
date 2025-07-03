@@ -21,11 +21,16 @@ public class ResenaServiceImp implements ResenaService {
 
     @Override
     public List<Resena> obtenerResenasPorLibro(int idLibro) {
-        return resenaRepository.findByLibro_IdLibro(idLibro);
+        return resenaRepository.findByLibro_IdLibroOrderByFechaDesc(idLibro);
     }
 
     @Override
     public List<Resena> obtenerResenasPorUsuario(int idUsuario) {
         return resenaRepository.findByUsuario_IdUsuario(idUsuario);
+    }
+    @Override
+    public Double promedioCalificacionPorLibro(int idLibro) {
+        Double promedio =    resenaRepository.obtenerPromedioPorLibro(idLibro);
+        return promedio != null ? promedio : 0.0;
     }
 }

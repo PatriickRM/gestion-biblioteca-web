@@ -1,3 +1,4 @@
+/*
 // Notificación activa si hay alertas de préstamo o reservas
 function checkNotifications() {
     // Aquí simulas una notificación activa
@@ -13,7 +14,7 @@ function checkNotifications() {
 
 // Filtro de búsqueda por nombre
 function setupSearch() {
-    const input = document.querySelector('#searchInput');
+    const input = document.querySelector('.search-input'); 
     const cards = document.querySelectorAll('.book-card');
 
     input.addEventListener('input', () => {
@@ -24,9 +25,21 @@ function setupSearch() {
         });
     });
 }
+*/
+
+function setupFAQ() {
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.addEventListener('click', () => {
+            item.classList.toggle('active');
+        });
+    });
+}
 
 // Inicializar todo al cargar
 window.addEventListener('DOMContentLoaded', () => {
-    checkNotifications();
+    /*
+	checkNotifications();
     setupSearch();
+	*/
+	setupFAQ(); 
 });

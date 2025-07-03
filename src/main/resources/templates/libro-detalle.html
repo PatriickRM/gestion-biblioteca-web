@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layoutPublico}">
+      <head>
+        <th:block layout:fragment="headExtra">
+        <link rel="stylesheet" th:href="@{/css/libro-detalle.css}">
+        </th:block>
+      </head>
+<body>
+<div layout:fragment="contenido">
+    <main class="detalle-libro">
+    <section class="libro-info">
+        <img th:src="@{/images/{img}(img=${libro.imagen})}" alt="Portada grande">
+        <div class="datos">
+        <h2 th:text="${libro.titulo}">Título</h2>
+        <p><strong>Autor:</strong> <span th:text="${libro.autor.nombre}">Autor</span></p>
+        <p><strong>Género:</strong> <span th:text="${libro.categoria.nombre_categoria}">Genero</span></p>
+        <p><strong>Editorial:</strong> <span th:text="${libro.editorial}">Editorial</span></p>
+        <p><strong>Año Publicación:</strong> <span th:text="${libro.anio_publicacion}">Año Publicación</span></p>
+        <p><strong>ISBN:</strong> <span th:text="${libro.isbn}">ISBN</span></p>
+        <p><strong>Estado:</strong> <span th:text="${libro.estado}">Estado</span></p>
+        </div>
+    </section>
+
+    <section class="resenas">
+        <h3>Reseñas</h3>
+        <form th:action="@{/libros/{id}/resena(id=${libro.idLibro})}" th:object="${nuevaResena}" method="post">
+        <textarea th:field="*{comentario}" placeholder="Escribe tu reseña..." required></textarea>
+        <label>Calificación:</label>
+        <select th:field="*{calificacion}" required>
+            <option value="" hidden>Elige</option>
+            <option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i + ' estrellas'}"></option>
+        </select>
+        <button type="submit">Publicar Reseña</button>
+        </form>
+
+        <div class="lista-resenas">
+        <div th:each="resena : ${resenas}" class="resena">
+        <p>
+            <strong th:text="${resena.usuario.nombres}">Nombre</strong> -
+            <span th:text="${#temporals.format(resena.fecha, 'dd/MM/yyyy HH:mm')}">Fecha</span>
+        </p>
+        <p>
+            <span th:each="i : ${#numbers.sequence(1, resena.calificacion)}">⭐</span>
+        </p>
+        <p th:text="${resena.comentario}">Comentario</p>
+    </div>
+        </div>
+    </section>
+    </main>
+</div>
+</body>
+</html>

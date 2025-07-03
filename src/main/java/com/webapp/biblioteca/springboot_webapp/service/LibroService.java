@@ -15,4 +15,9 @@ public interface LibroService {
     Libro buscarLibroPorId(Integer id);
     List<Libro> listarLibros();
     Page<Libro> listarLibrosPaginados(Pageable pageable);
+    public List<Integer> obtenerAniosPublicacion();
+    public List<String> obtenerAutores();
+    public List<String> obtenerEditoriales();
+    public List<String> obtenerCategorias();
+    Page<Libro> buscarConFiltros(Integer year, String author, String editorial, String categoria, String nombre, Pageable pageable);
 }
