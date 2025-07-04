@@ -38,24 +38,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF para simplificar la configuración
             .formLogin(form -> form
                 .loginPage("/login")                         
                 .loginProcessingUrl("/api/auth/login")       
-                .successHandler(redireccionConfig) 
+                .successHandler(redireccionConfig)
                 .failureUrl("/login?error=true")  
                 .permitAll()
             )
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout=true")
-                .invalidateHttpSession(true)
+                .invalidateHttpSession(true) 
                 .deleteCookies("JSESSIONID")
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/index", "/css/**", "/js/**", "/images/**", "/webjars/**", "/login","/usuarios/registro","/libros/**").permitAll()
-                .requestMatchers("/usuarios/**","/libros/**").hasRole("ADMIN")
-                .requestMatchers("/lector/**").hasRole("LECTOR")
+                .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/webjars/**", "/login","/usuarios/registro","/libros/**").permitAll()
+                .requestMatchers("/usuarios/**","/libros/**", "/index").hasRole("ADMIN")
+                .requestMatchers("/mis-prestamos").authenticated()
                 .anyRequest().authenticated()
             );
 

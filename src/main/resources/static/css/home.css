@@ -620,6 +620,234 @@ img {
     line-height: 1.6;
 }
 
+.events {
+    padding: 40px;
+}
+
+.events-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #6d4c41;
+} 
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+.events h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+}
+.event-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Fuerza siempre 3 columnas */
+    gap: 30px;
+}
+
+
+.event-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+
+.event-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.event-info {
+    padding: 15px;
+}
+
+.event-info h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #6d4c41;
+}
+.event-info {
+    padding: 15px;
+}
+
+.event-info h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #6d4c41;
+}
+.event-info p {
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+.event-card .event-content {
+    padding: 18px;
+}
+
+.event-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.event-card h3 {
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+    color: #333;
+}
+.event-card p {
+    margin: 6px 0;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
+.badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: #fff;
+    font-weight: bold;
+}
+.badge.presencial {
+    background: #6d4c41;
+}
+
+.badge.virtual {
+    background: #00796b;
+}
+
+.contact-page {
+    padding: 40px;
+}
+
+.contact-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #6d4c41;
+}
+
+.contact-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.contact-form .form-group {
+    margin-bottom: 20px;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #6d4c41;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 1rem;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: #6d4c41;
+}
+
+.contact-info h3 {
+    margin-bottom: 15px;
+    color: #6d4c41;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.contact-info .social-links a {
+    margin-right: 10px;
+    font-size: 1.5rem;
+    color: #6d4c41;
+    transition: color 0.3s;
+}
+
+.contact-info .social-links a:hover {
+    color: #5a3a2d;
+}
+
+
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #6d4c41;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+    z-index: 1000;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* Responsivo */
+@media (max-width: 900px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Responsivo */
+@media (max-width: 1000px) {
+    .event-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .event-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Modo presencial o virtual */
+.mode {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.mode.presencial {
+    color: #2e7d32; /* verde */
+}
+
+.mode.virtual {
+    color: #1565c0; /* azul */
+}
+
+
+
 
 @media (max-width: 768px) {
     .site-footer {

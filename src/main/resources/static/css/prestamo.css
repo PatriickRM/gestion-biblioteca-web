@@ -1,0 +1,189 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+.page-title {
+    color: #495057;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+}
+
+.custom-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.5rem;
+}
+
+.card-header-custom {
+    background-color: #495057;
+    color: white;
+    border-radius: 8px 8px 0 0;
+    padding: 1rem 1.5rem;
+    margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    border: none;
+}
+
+.card-header-custom h5 {
+    margin: 0;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-control, .form-select {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 10px 12px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #495057;
+    box-shadow: 0 0 0 0.2rem rgba(73, 80, 87, 0.25);
+}
+
+.btn-modern {
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 500;
+    border: none;
+}
+
+.btn-primary-modern {
+    background-color: #495057;
+    color: white;
+}
+
+.btn-success-modern {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-outline-modern {
+    border: 1px solid #495057;
+    color: #495057;
+    background: transparent;
+}
+
+.table-modern {
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.table-modern thead {
+    background-color: #495057;
+    color: white;
+}
+
+.table-modern th {
+    border: none;
+    padding: 12px;
+    font-weight: 500;
+}
+
+.table-modern td {
+    border: none;
+    padding: 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.table-modern tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.img-book {
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.img-thumbnail-modern {
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.info-section {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    border: 1px solid #e9ecef;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.date-input {
+    border-left: 3px solid #28a745;
+}
+
+.date-input-danger {
+    border-left: 3px solid #dc3545;
+}
+
+.textarea-modern {
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.textarea-modern:focus {
+    border-color: #495057;
+    box-shadow: 0 0 0 0.2rem rgba(73, 80, 87, 0.25);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #ced4da;
+}
+
+.badge-modern {
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.section-divider {
+    height: 1px;
+    background-color: #e9ecef;
+    margin: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 1.8rem;
+    }
+    
+    .custom-card {
+        border-radius: 6px;
+    }
+    
+    .card-header-custom {
+        padding: 0.8rem 1rem;
+        margin: -1rem -1rem 1rem -1rem;
+    }
+}

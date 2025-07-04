@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Nuevo Préstamo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/prestamo.css}" />
+</head>
+<body>
+<main layout:fragment="contenido">
+<div class="container py-5">
+    <h1 class="page-title">
+        <i class="fas fa-book-open"></i> Registrar Nuevo Préstamo
+    </h1>
+    
+    <!-- Selección de libro -->
+    <div class="custom-card p-4">
+        <div class="card-header-custom">
+            <h5><i class="fas fa-book"></i> Seleccionar Libro</h5>
+        </div>
+        <div class="row g-3 align-items-end">
+            <div class="col-md-8">
+                <label for="idLibro" class="form-label">
+                    <i class="fas fa-search"></i> Buscar Libro:
+                </label>
+                <select id="idLibro" class="form-select" onchange="mostrarDatosLibro()">
+                    <option value="">-- Selecciona un libro --</option>
+                    <th:block th:each="libro : ${libros}">
+                        <option th:value="${libro.idLibro}"
+                                th:data-titulo="${libro.titulo}"
+                                th:data-autor="${libro.autor.nombre}"
+                                th:data-editorial="${libro.editorial}"
+                                th:data-categoria="${libro.categoria.nombre_categoria}"
+                                th:data-anio="${libro.anio_publicacion}"
+                                th:data-isbn="${libro.isbn}"
+                                th:data-imagen="${libro.imagen}">
+                            <span th:text="${libro.titulo}"></span>
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-success-modern btn-modern w-100" onclick="agregarLibro()">
+                    <i class="fas fa-plus"></i> Agregar Libro
+                </button>
+            </div>
+        </div>
+
+        <!-- Datos libro seleccionados -->
+        <div class="info-section" id="infoLibro" style="display:none;">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <img id="imgLibro" src="" class="img-fluid img-book" alt="Imagen libro">
+                </div>
+                <div class="col-md-9">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                <i class="fas fa-heading"></i> Título
+                            </label>
+                            <input type="text" class="form-control" id="tituloLibro" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                <i class="fas fa-user"></i> Autor
+                            </label>
+                            <input type="text" class="form-control" id="autorLibro" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">
+                                <i class="fas fa-building"></i> Editorial
+                            </label>
+                            <input type="text" class="form-control" id="editorialLibro" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">
+                                <i class="fas fa-tag"></i> Categoría
+                            </label>
+                            <input type="text" class="form-control" id="categoriaLibro" readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">
+                                <i class="fas fa-calendar"></i> Año
+                            </label>
+                            <input type="text" class="form-control" id="anioLibro" readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">
+                                <i class="fas fa-barcode"></i> ISBN
+                            </label>
+                            <input type="text" class="form-control" id="isbnLibro" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de libros agregados -->
+    <div class="custom-card p-4">
+        <div class="card-header-custom">
+            <h5><i class="fas fa-list"></i> Libros Seleccionados</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-modern align-middle text-center">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-image"></i> Imagen</th>
+                        <th><i class="fas fa-heading"></i> Título</th>
+                        <th><i class="fas fa-user"></i> Autor</th>
+                        <th><i class="fas fa-tag"></i> Categoría</th>
+                        <th><i class="fas fa-building"></i> Editorial</th>
+                        <th><i class="fas fa-calendar"></i> Año</th>
+                        <th><i class="fas fa-barcode"></i> ISBN</th>
+                        <th><i class="fas fa-cog"></i> Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="l : ${carrito}" th:if="${not #lists.isEmpty(carrito)}">
+                        <td>
+                            <img th:src="@{'/images/' + ${l.imagen}}" class="img-thumbnail-modern" style="max-width: 60px;">
+                        </td>
+                        <td th:text="${l.titulo}" class="fw-bold"></td>
+                        <td th:text="${l.autor.nombre}"></td>
+                        <td>
+                            <span class="badge badge-modern bg-primary" th:text="${l.categoria.nombre_categoria}"></span>
+                        </td>
+                        <td th:text="${l.editorial}"></td>
+                        <td th:text="${l.anio_publicacion}"></td>
+                        <td th:text="${l.isbn}"></td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm" 
+                                    th:onclick="'eliminarLibro(' + ${l.idLibro} + ')'">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(carrito)}">
+                        <td colspan="7" class="empty-state">
+                            <p>No hay libros seleccionados</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Selección de usuario -->
+    <div class="custom-card p-4">
+        <div class="card-header-custom">
+            <h5><i class="fas fa-user"></i> Seleccionar Usuario</h5>
+        </div>
+        <div class="row g-3 align-items-end">
+            <div class="col-md-8">
+                <label for="idUsuario" class="form-label">
+                    <i class="fas fa-users"></i> Usuario:
+                </label>
+                <select id="idUsuario" name="idUsuario" class="form-select">
+                    <option value="">-- Selecciona un usuario --</option>
+                    <th:block th:each="u : ${usuarios}">
+                        <option th:value="${u.idUsuario}"
+                                th:data-dni="${u.dni}"
+                                th:data-correo="${u.correo}"
+                                th:data-telefono="${u.telefono}"
+                                th:data-username="${u.username}"
+                                th:selected="${u.idUsuario} == ${idUsuarioSeleccionado}"
+                                th:text="${u.nombres + ' ' + u.apellidos}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-outline-modern btn-modern w-100" onclick="mostrarDatosUsuario()">
+                    <i class="fas fa-eye"></i> Mostrar Datos
+                </button>
+            </div>
+        </div>
+        <div class="info-section" id="infoUsuario" style="display:none;">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">
+                        <i class="fas fa-id-card"></i> DNI
+                    </label>
+                    <input type="text" class="form-control" id="dniUsuario" readonly>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">
+                        <i class="fas fa-envelope"></i> Correo
+                    </label>
+                    <input type="text" class="form-control" id="correoUsuario" readonly>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">
+                        <i class="fas fa-phone"></i> Teléfono
+                    </label>
+                    <input type="text" class="form-control" id="telefonoUsuario" readonly>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">
+                        <i class="fas fa-user-circle"></i> Usuario
+                    </label>
+                    <input type="text" class="form-control" id="usernameUsuario" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Formulario guardar prestamo -->
+    <form method="post" th:action="@{/prestamos/guardar}" class="custom-card p-4">
+        <div class="card-header-custom">
+            <h5><i class="fas fa-save"></i> Finalizar Préstamo</h5>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label class="form-label">
+                    <i class="fas fa-calendar-check"></i> Fecha de Préstamo
+                </label>
+                <input type="date" class="form-control date-input" name="fechaPrestamo" 
+                       th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">
+                    <i class="fas fa-calendar-times"></i> Fecha de Devolución
+                </label>
+                <input type="date" class="form-control date-input-danger" name="fechaDevolucion" required>
+            </div>
+            <input type="hidden" name="idUsuario" id="inputHiddenUsuario" th:value="${idUsuarioSeleccionado}">
+        </div>
+        <div class="mb-4">
+            <label class="form-label">
+                <i class="fas fa-comment"></i> Comentario
+            </label>
+            <textarea class="form-control textarea-modern" name="comentario" rows="4" 
+                      placeholder="Ingresa comentarios adicionales sobre el préstamo..."></textarea>
+        </div>
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary-modern btn-modern px-5 py-3">
+                <i class="fas fa-save"></i> Guardar Préstamo
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function mostrarDatosLibro() {
+        const select = document.getElementById("idLibro");
+        const selected = select.options[select.selectedIndex];
+        const infoDiv = document.getElementById("infoLibro");
+        
+        if (!selected.value) {
+            infoDiv.style.display = "none";
+            return;
+        }
+
+        infoDiv.style.display = "block";
+        
+        document.getElementById("tituloLibro").value = selected.getAttribute("data-titulo");
+        document.getElementById("autorLibro").value = selected.getAttribute("data-autor");
+        document.getElementById("editorialLibro").value = selected.getAttribute("data-editorial");
+        document.getElementById("categoriaLibro").value = selected.getAttribute("data-categoria");
+        document.getElementById("anioLibro").value = selected.getAttribute("data-anio");
+        document.getElementById("isbnLibro").value = selected.getAttribute("data-isbn");
+        document.getElementById("imgLibro").src = "/images/" + selected.getAttribute("data-imagen");
+    }
+
+    function mostrarDatosUsuario() {
+        const select = document.getElementById("idUsuario");
+        const selected = select.options[select.selectedIndex];
+        const infoDiv = document.getElementById("infoUsuario");
+        
+        if (!selected.value) {
+            infoDiv.style.display = "none";
+            return;
+        }
+
+        infoDiv.style.display = "block";
+        
+        document.getElementById("dniUsuario").value = selected.getAttribute("data-dni");
+        document.getElementById("correoUsuario").value = selected.getAttribute("data-correo");
+        document.getElementById("telefonoUsuario").value = selected.getAttribute("data-telefono");
+        document.getElementById("usernameUsuario").value = selected.getAttribute("data-username");
+
+        document.getElementById("inputHiddenUsuario").value = selected.value;
+    }
+
+    function agregarLibro() {
+        const libroId = document.getElementById("idLibro").value;
+        const usuarioId = document.getElementById("inputHiddenUsuario").value;
+
+        // Validar que se haya seleccionado un libro
+        if (!libroId) {
+            showNotification("Por favor seleccione un libro", "warning");
+            return;
+        }
+        
+        //Verificar si el libro ya está en el carrito
+        const filas = document.querySelectorAll("table tbody tr");
+        const isbnSeleccionado = document.getElementById("isbnLibro").value;
+
+        for (let fila of filas) {
+            const celdas = fila.querySelectorAll("td");
+            if (celdas.length > 6 && celdas[6].textContent === isbnSeleccionado) {
+                showNotification("Este libro ya fue agregado", "warning");
+                return;
+            }
+        }
+        // Deshabilitar el botón mientras se procesa
+        const btn = document.querySelector('.btn-success-modern');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Agregando...';
+        btn.disabled = true;
+
+        // Construir el body de la petición
+        const body = `idLibro=${libroId}&idUsuario=${usuarioId}`;
+
+        fetch('/prestamos/agregarLibro', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al agregar libro");
+            }
+            // Recargar la página para mostrar los cambios
+            window.location.reload();
+        })
+        .catch(err => {
+            console.error(err);
+            showNotification("Error al agregar el libro", "error");
+        })
+        .finally(() => {
+            btn.innerHTML = '<i class="fas fa-plus"></i> Agregar Libro';
+            btn.disabled = false;
+        });
+    }
+
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'warning' ? 'warning' : 'success'} alert-dismissible fade show position-fixed`;
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'check-circle'}"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+    }
+    
+    function eliminarLibro(libroId) {
+        if (!confirm('¿Estás seguro de que quieres eliminar este libro?')) {
+            return;
+        }
+
+        const usuarioId = document.getElementById("inputHiddenUsuario").value;
+        
+        fetch('/prestamos/eliminarLibro', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `idLibro=${libroId}&idUsuario=${usuarioId}`
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al eliminar libro");
+            }
+            window.location.reload();
+        })
+        .catch(err => {
+            console.error(err);
+            showNotification("Error al eliminar el libro", "error");
+        });
+    }
+    // Validación de fecha
+    document.addEventListener('DOMContentLoaded', function() {
+        const fechaDevolucion = document.querySelector('input[name="fechaDevolucion"]');
+        if (fechaDevolucion) {
+            fechaDevolucion.addEventListener('change', function() {
+                const hoy = new Date();
+                const fechaSeleccionada = new Date(this.value);
+                
+                if (fechaSeleccionada <= hoy) {
+                    showNotification("La fecha de devolución debe ser posterior a hoy", "warning");
+                    this.style.borderColor = '#dc3545';
+                } else {
+                    this.style.borderColor = '#28a745';
+                }
+            });
+        }
+       const selectUsuario = document.getElementById("idUsuario");
+        const inputHiddenUsuario = document.getElementById("inputHiddenUsuario");
+
+        if (selectUsuario && inputHiddenUsuario && inputHiddenUsuario.value) {
+            selectUsuario.value = inputHiddenUsuario.value;
+            mostrarDatosUsuario();
+        }
+    });
+</script>
+</main>
+</body>
+</html>

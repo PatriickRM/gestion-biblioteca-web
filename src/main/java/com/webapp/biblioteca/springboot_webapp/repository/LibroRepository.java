@@ -22,4 +22,6 @@ public interface LibroRepository extends CrudRepository<Libro, Integer>, LibroRe
 
      @Query("SELECT DISTINCT l.categoria.nombre_categoria FROM Libro l ORDER BY l.categoria.nombre_categoria ASC")
      List<String> obtenerCategorias();
+
+     List<Libro> findByEstado(String estado);
 }

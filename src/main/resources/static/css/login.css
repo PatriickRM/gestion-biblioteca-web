@@ -119,5 +119,15 @@ body {
     flex-direction: column;
   }
 }
+.select-rol {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
 
 

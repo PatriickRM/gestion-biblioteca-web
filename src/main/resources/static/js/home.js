@@ -27,6 +27,23 @@ function setupSearch() {
 }
 */
 
+function setupContactForm() {
+    const form = document.querySelector('.contact-form');
+    if (!form) return; // Si no existe el formulario, no hacer nada
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        const toast = document.getElementById('toast');
+        if (!toast) return; 
+
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000); 
+        this.reset();
+    });
+}
+
 function setupFAQ() {
     document.querySelectorAll('.faq-item').forEach(item => {
         item.addEventListener('click', () => {
@@ -41,5 +58,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	checkNotifications();
     setupSearch();
 	*/
-	setupFAQ(); 
+	setupFAQ();
+	setupContactForm(); 
 });

@@ -5,5 +5,6 @@ import java.util.List;
 import com.webapp.biblioteca.springboot_webapp.models.Categoria;
 
 public interface CategoriaService {
-    List<Categoria> listarCategorias();
+   List<Categoria> listarCategorias();
+    void registrarCategoria(Categoria categoria);
 }

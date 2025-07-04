@@ -1,5 +1,9 @@
 package com.webapp.biblioteca.springboot_webapp.controller;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +15,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.webapp.biblioteca.springboot_webapp.models.Usuario;
+import com.webapp.biblioteca.springboot_webapp.reports.IReporteUsuario;
 import com.webapp.biblioteca.springboot_webapp.service.RolService;
 import com.webapp.biblioteca.springboot_webapp.service.UsuarioService;
+
+import jakarta.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.JRException;
 
 
 @Controller
@@ -28,13 +37,28 @@ public class UsuarioController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RolService rolService;
-    //Listar usuarios
+    @Autowired
+	private IReporteUsuario ireporteusuario;
+    
+ // Listar usuarios con filtro por rol
     @GetMapping
-    public String listarUsuarios(Model model) {
-        List<Usuario> usuarios = usuarioService.ListarUsuarios();
+    public String listarUsuarios(@RequestParam(defaultValue = "--SELECCIONAR--") String rol, Model model) {
+        List<Usuario> usuarios;
+
+        if ("--SELECCIONAR--".equals(rol)) {
+            usuarios = usuarioService.ListarUsuarios();
+        } else {
+            usuarios = usuarioService.buscarporRol(rol);
+        }
+
         model.addAttribute("usuarios", usuarios);
-        return "usuarios"; 
+        model.addAttribute("roles", rolService.listarRoles());
+        model.addAttribute("rol", rol);
+
+        return "usuarios";
     }
+
+    
     //Registrar usuario
     @GetMapping("/nuevo")
     public String mostrarFormRegistro(Model model) {
@@ -116,10 +140,22 @@ public class UsuarioController {
     public String registrarUsuarioPublico(@ModelAttribute("usuario") Usuario usuario) {
     String claveEncriptada = passwordEncoder.encode(usuario.getPassword());
     usuario.setPassword(claveEncriptada);
-    usuario.setRol(rolService.findByNombreRol("LECTOR"));
+    usuario.setRol(rolService.findByNombreRol("ESTUDIANTE"));
     usuarioService.RegistrarUsuario(usuario);
     return "redirect:/login?registroExitoso";
     }
 
-
+  //*********************reportes
+  	@GetMapping("/reportes")	
+  	public void createPdf(HttpServletResponse response) throws JRException, IOException {
+  		
+	 response.setContentType("application/pdf"); DateFormat dateforma=new
+		 SimpleDateFormat("yyyy-MM-dd:hh:mm:ss"); String
+		 currenDateTime=dateforma.format(new Date()); String
+		 headerKey="Content-Disposition"; String
+		 headerValue="attachment;filename=pdf_"+currenDateTime+".pdf";
+		 response.setHeader(headerKey,headerValue);
+		 ireporteusuario.exportJapertReport(response);
+		
+	}   //fin del metodo create pdf....
 }

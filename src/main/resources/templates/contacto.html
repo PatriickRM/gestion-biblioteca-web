@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layoutPublico}">
+<body>
+    <div layout:fragment="contenido">
+		<main class="contact-page">
+			
+		    <h2 class="contact-title">Contáctanos</h2>
+		    <div class="contact-container">
+
+		        <form class="contact-form">
+		            <div class="form-group">
+		                <label for="name"><i class='bx bx-user'></i> Nombre</label>
+		                <input type="text" id="name" name="name" placeholder="Tu nombre completo" required>
+		            </div>
+		            <div class="form-group">
+		                <label for="email"><i class='bx bx-envelope'></i> Correo electrónico</label>
+		                <input type="email" id="email" name="email" placeholder="tuemail@ejemplo.com" required>
+		            </div>
+		            <div class="form-group">
+		                <label for="subject"><i class='bx bx-edit'></i> Asunto</label>
+		                <input type="text" id="subject" name="subject" placeholder="Motivo del mensaje" required>
+		            </div>
+		            <div class="form-group">
+		                <label for="message"><i class='bx bx-message'></i> Mensaje</label>
+		                <textarea id="message" name="message" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
+		            </div>
+		            <button type="submit" class="apply-filters">Enviar mensaje</button>
+		        </form>
+				
+
+		        <div class="contact-info">
+		            <h3>Información de Contacto</h3>
+		            <p><i class='bx bx-map'></i> Av. Central 123 - Lima</p>
+		            <p><i class='bx bx-phone'></i> +51 987 654 321</p>
+		            <p><i class='bx bx-envelope'></i> contacto@mibiblioteca.com</p>
+		            <div class="social-links">
+		                <a href="#"><i class='bx bxl-facebook'></i></a>
+		                <a href="#"><i class='bx bxl-twitter'></i></a>
+		                <a href="#"><i class='bx bxl-instagram'></i></a>
+		            </div>
+		        </div>
+		    </div>
+			<div id="toast" class="toast">¡Mensaje enviado con éxito!</div>
+
+		</main>
+
+    </div>
+</body>
+</html>

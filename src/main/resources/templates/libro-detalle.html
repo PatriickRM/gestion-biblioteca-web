@@ -1,53 +1,113 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layoutPublico}">
-      <head>
-        <th:block layout:fragment="headExtra">
-        <link rel="stylesheet" th:href="@{/css/libro-detalle.css}">
-        </th:block>
-      </head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	    <link rel="stylesheet" th:href="@{/css/home.css}" >
+	    <title>MiBiblioteca</title>
+</head>
 <body>
-<div layout:fragment="contenido">
-    <main class="detalle-libro">
-    <section class="libro-info">
-        <img th:src="@{/images/{img}(img=${libro.imagen})}" alt="Portada grande">
-        <div class="datos">
-        <h2 th:text="${libro.titulo}">Título</h2>
-        <p><strong>Autor:</strong> <span th:text="${libro.autor.nombre}">Autor</span></p>
-        <p><strong>Género:</strong> <span th:text="${libro.categoria.nombre_categoria}">Genero</span></p>
-        <p><strong>Editorial:</strong> <span th:text="${libro.editorial}">Editorial</span></p>
-        <p><strong>Año Publicación:</strong> <span th:text="${libro.anio_publicacion}">Año Publicación</span></p>
-        <p><strong>ISBN:</strong> <span th:text="${libro.isbn}">ISBN</span></p>
-        <p><strong>Estado:</strong> <span th:text="${libro.estado}">Estado</span></p>
-        </div>
-    </section>
 
-    <section class="resenas">
-        <h3>Reseñas</h3>
-        <form th:action="@{/libros/{id}/resena(id=${libro.idLibro})}" th:object="${nuevaResena}" method="post">
-        <textarea th:field="*{comentario}" placeholder="Escribe tu reseña..." required></textarea>
-        <label>Calificación:</label>
-        <select th:field="*{calificacion}" required>
-            <option value="" hidden>Elige</option>
-            <option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i + ' estrellas'}"></option>
-        </select>
-        <button type="submit">Publicar Reseña</button>
-        </form>
+    <div class="top-container">
 
-        <div class="lista-resenas">
-        <div th:each="resena : ${resenas}" class="resena">
-        <p>
-            <strong th:text="${resena.usuario.nombres}">Nombre</strong> -
-            <span th:text="${#temporals.format(resena.fecha, 'dd/MM/yyyy HH:mm')}">Fecha</span>
-        </p>
-        <p>
-            <span th:each="i : ${#numbers.sequence(1, resena.calificacion)}">⭐</span>
-        </p>
-        <p th:text="${resena.comentario}">Comentario</p>
+        <div class="nav">
+    <div class="logo">
+        <i class='bx bx-book-open'></i>
+        <a href="#">MiBiblioteca</a>
     </div>
+
+	<div class="nav-links">
+		    <a th:href="@{/home}">Inicio</a>
+		    <a th:href="@{/eventos}">Eventos</a>
+		    <a th:href="@{/preguntas}">Preguntas Frecuentes</a>
+		    <a th:href="@{/contacto}">Contacto</a>
+		    <a th:href="@{/condiciones}">Condiciones</a>
+		</div>
+
+    <div class="right-section">
+        <i class='bx bx-bell'>
+            <span class="notification-badge">3</span>
+        </i>
+
+        <div class="profile">
+            <div class="info">
+                <img th:src="@{/images/user-avatar.png}" alt="Perfil">
+                <div>
+                    <p th:text="${usuarioActual.nombres} +' '+${usuarioActual.apellidos}">Nombre</p>
+                    <p th:text="${usuarioActual.rol.nombreRol}">Rol</p>
+                </div>
+            </div>
+            <i class='bx bx-chevron-down'></i>
+            <div class="profile-dropdown">
+                <a href="#">Mi perfil</a>
+                <a href="#">Mis préstamos</a>
+                <a th:href="@{/logout}">Cerrar sesión</a>
+            </div>
         </div>
-    </section>
-    </main>
+    </div>
 </div>
+
+
+<div class="detalle-libro">
+
+    <img th:src="@{/images/{img}(img=${libro.imagen})}" alt="Portada del libro">
+
+    <div class="info">
+        <h2 th:text="${libro.titulo}">El Quijote</h2>
+		<p><strong>Autor:</strong> <span th:text="${libro.autor.nombre}">Autor</span></p>
+		<p><strong>Género:</strong> <span th:text="${libro.categoria.nombre_categoria}">Genero</span></p>
+		<p><strong>Editorial:</strong> <span th:text="${libro.editorial}">Editorial</span></p>
+		<p><strong>Año Publicación:</strong> <span th:text="${libro.anio_publicacion}">Año Publicación</span></p>
+		<p><strong>ISBN:</strong> <span th:text="${libro.isbn}">ISBN</span></p>
+		<p><strong>Estado:</strong> <span th:text="${libro.estado}">Estado</span></p>
+    </div>
+
+</div>
+
+<div class="reseñas" style="max-width: 1000px; margin: 30px auto;">
+    <h3>Escribe tu reseña</h3>
+	<form th:action="@{/libros/{id}/resena(id=${libro.idLibro})}" th:object="${nuevaResena}" method="post">
+    <textarea th:field="*{comentario}" rows="4" placeholder="Escribe aquí tu reseña..." required></textarea>
+	<select th:field="*{calificacion}" required>
+	            <option value="" hidden>Calificacion</option>
+	            <option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i + ' estrellas'}"></option>
+	        </select>
+    <button type="submit">Publicar Reseña</button>
+	</form>
+</div>
+
+<div class="reseñas" style="max-width: 1000px; margin: 30px auto;">
+    <h3>Reseñas de otros usuarios</h3>
+
+    <div th:each="resena : ${resenas}" class="term-item">
+        <h4 th:text="${resena.usuario.nombres} + ' ' + ${resena.usuario.apellidos}">Nombres</h4>
+		<small th:text="${#temporals.format(resena.fecha, 'dd/MM/yyyy HH:mm')}" style="color: #999;">Fecha</small>
+		<p>
+		  <span th:each="i : ${#numbers.sequence(1, resena.calificacion)}">⭐</span>
+		 </p>
+		 <p th:text="${resena.comentario}">Comentario</p>
+    </div>
+</div>
+    </div>
+   
+
+    <footer class="site-footer">
+    <div class="footer-left">
+        <i class='bx bx-book-open'></i>
+        <p>MiBiblioteca<br><span class="location">Av. Procéres de la Independencia 444 - SJL</span></p>
+    </div>
+    <div class="footer-center">
+        © 2025 MiBiblioteca. Todos los derechos reservados.
+    </div>
+    <div class="footer-right">
+        <a href="#"><i class='bx bxl-facebook'></i></a>
+        <a href="#"><i class='bx bxl-twitter'></i></a>
+        <a href="#"><i class='bx bxl-instagram'></i></a>
+    </div>
+</footer>
+
+<script th:src="@{/js/home.js}"></script>
+
 </body>
 </html>

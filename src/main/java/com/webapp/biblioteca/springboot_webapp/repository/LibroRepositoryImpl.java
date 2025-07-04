@@ -24,11 +24,11 @@ public class LibroRepositoryImpl implements LibroRepositoryCustom{
         Map<String, Object> params = new HashMap<>();
 
         if (year != null) {
-            jpql.append(" AND l.anio_publicacion = :year");
+            jpql.append(" AND l.anio_publicacion = :year"); 
             params.put("year", year);
         }
         if (author != null && !author.isEmpty()) {
-            jpql.append(" AND LOWER(l.autor.nombre) = LOWER(:author)");
+            jpql.append(" AND LOWER(l.autor.nombre) = LOWER(:author)"); // Se usa LOWER para comparar sin importar mayúsculas o minúsculas    
             params.put("author", author);
         }
         if (editorial != null && !editorial.isEmpty()) {
@@ -48,8 +48,8 @@ public class LibroRepositoryImpl implements LibroRepositoryCustom{
         TypedQuery<Long> countQuery = entityManager.createQuery(jpql.toString().replace("SELECT l", "SELECT COUNT(l)"), Long.class);
 
         for (Map.Entry<String, Object> entry : params.entrySet()) {
-            query.setParameter(entry.getKey(), entry.getValue());
-            countQuery.setParameter(entry.getKey(), entry.getValue());
+            query.setParameter(entry.getKey(), entry.getValue()); // Establece los parámetros en la consulta
+            countQuery.setParameter(entry.getKey(), entry.getValue()); // Establece los mismos parámetros en la consulta de conteo
         }
 
         query.setFirstResult((int) pageable.getOffset());

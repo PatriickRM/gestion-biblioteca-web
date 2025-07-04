@@ -19,7 +19,7 @@ public class AuthServiceImp implements AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-     @Override
+    @Override
     public Usuario login(String usuario, String clavePlano) {
         Usuario user = authRepository.findByUsername(usuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no registrado"));
@@ -36,7 +36,7 @@ public class AuthServiceImp implements AuthService {
         return passwordEncoder.encode(clave);
     }
 
-    // Para depurar y probar
+    // Para generar un hash de la clave  
     @PostConstruct
     public void generarHash() {
         String hash = passwordEncoder.encode("admin123");

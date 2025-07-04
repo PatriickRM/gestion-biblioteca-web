@@ -71,4 +71,9 @@ public class LibroServiceImp implements LibroService {
         return libroRepository.buscarConFiltros(year, author, editorial, categoria, nombre, pageable);
     }
 
+    @Override
+    public long contarLibros() {
+       return libroRepository.count();
+    }
+
 }

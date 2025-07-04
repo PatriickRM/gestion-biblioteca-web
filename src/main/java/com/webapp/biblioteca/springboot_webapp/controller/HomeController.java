@@ -2,6 +2,7 @@ package com.webapp.biblioteca.springboot_webapp.controller;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.webapp.biblioteca.springboot_webapp.models.Libro;
+import com.webapp.biblioteca.springboot_webapp.models.Prestamo;
 import com.webapp.biblioteca.springboot_webapp.models.Usuario;
 import com.webapp.biblioteca.springboot_webapp.service.CustomUserDetails;
 import com.webapp.biblioteca.springboot_webapp.service.LibroService;
+import com.webapp.biblioteca.springboot_webapp.service.PrestamoServiceImp;
 import com.webapp.biblioteca.springboot_webapp.service.ResenaService;
 import com.webapp.biblioteca.springboot_webapp.service.UsuarioService;
 
@@ -31,10 +34,17 @@ public class HomeController {
     private LibroService libroService;
     @Autowired
     private ResenaService resenaService;
-
+    @Autowired
+    private PrestamoServiceImp prestamoService;
 
     @GetMapping({"/", "/index"})
-    public String index() {
+    public String index(Model model) {
+        List<Prestamo> prestamosRecientes = prestamoService.obtenerUltimosPrestamos(3);
+        model.addAttribute("prestamosRecientes", prestamosRecientes);
+        long totalUsuarios = usuarioService.contarUsuarios();
+    	long totalLibros = libroService.contarLibros();
+        model.addAttribute("totalUsuarios", totalUsuarios);
+        model.addAttribute("totalLibros", totalLibros);
         return "index";
     }
 
@@ -108,5 +118,15 @@ public class HomeController {
         model.addAttribute("extraClass", "faq-container");
         return "condiciones";
     }
-
+     @GetMapping("/eventos")
+    public String eventos(Model model) {
+        model.addAttribute("extraClass", "faq-container");
+        return "eventos";
+    }
+    
+    @GetMapping("/contacto")
+    public String contacto(Model model) {
+        model.addAttribute("extraClass", "faq-container");
+        return "contacto";
+    }
  }

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layoutPublico}">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .prestamos-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .prestamos-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .prestamos-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .prestamos-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 150px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .stat-card.active {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .stat-card.delivered {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .prestamos-sections {
+            display: grid;
+            gap: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .prestamos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .prestamo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid #3498db;
+        }
+
+        .prestamo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .prestamo-card.vencido {
+            border-left-color: #e74c3c;
+        }
+
+        .prestamo-card.por-vencer {
+            border-left-color: #f39c12;
+        }
+
+        .prestamo-card.entregado {
+            border-left-color: #27ae60;
+        }
+
+        .prestamo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .prestamo-id {
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .estado-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .estado-prestado {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .estado-entregado {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .prestamo-info {
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .info-row i {
+            width: 20px;
+            color: #7f8c8d;
+        }
+
+        .info-row strong {
+            color: #2c3e50;
+        }
+
+        .libros-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .libros-list h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .libro-item {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid #3498db;
+        }
+
+        .libro-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .dias-restantes {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .dias-restantes.normal {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .dias-restantes.alerta {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .dias-restantes.vencido {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .no-prestamos {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .no-prestamos i {
+            font-size: 4em;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+
+        .no-prestamos h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .btn-catalogo {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-catalogo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .prestamos-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .prestamos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prestamo-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="contenido">
+        <div class="prestamos-container">
+            <!-- Header -->
+            <div class="prestamos-header">
+                <h2><i class="fas fa-book-reader"></i> Mis Préstamos</h2>
+                <p>Gestiona y revisa el estado de todos tus préstamos de libros</p>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="prestamos-stats">
+                <div class="stat-card">
+                    <div class="number" th:text="${totalPrestamos}">0</div>
+                    <div class="label">Total Préstamos</div>
+                </div>
+                <div class="stat-card active">
+                    <div class="number" th:text="${totalActivos}">0</div>
+                    <div class="label">Activos</div>
+                </div>
+                <div class="stat-card delivered">
+                    <div class="number" th:text="${totalEntregados}">0</div>
+                    <div class="label">Entregados</div>
+                </div>
+            </div>
+
+            <!-- Secciones de Préstamos -->
+            <div class="prestamos-sections">
+                
+                <!-- Préstamos Activos -->
+                <div th:if="${not #lists.isEmpty(prestamosActivos)}">
+                    <h3 class="section-title">
+                        <i class="fas fa-clock"></i>
+                        Préstamos Activos
+                    </h3>
+                    <div class="prestamos-grid">
+                        <div th:each="prestamo : ${prestamosActivos}" 
+                             class="prestamo-card"
+                             th:classappend="${diasRestantes[prestamo.idPrestamo] != null and diasRestantes[prestamo.idPrestamo] < 0} ? 'vencido' : 
+                                            (${diasRestantes[prestamo.idPrestamo] != null and diasRestantes[prestamo.idPrestamo] <= 3} ? 'por-vencer' : '')">
+                            
+                            <div class="prestamo-header">
+                                <div class="prestamo-id">
+                                    Préstamo #<span th:text="${prestamo.idPrestamo}"></span>
+                                </div>
+                                <div class="estado-badge estado-prestado">
+                                    <i class="fas fa-bookmark"></i> Prestado
+                                </div>
+                            </div>
+
+                            <div class="prestamo-info">
+                                <div class="info-row">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <strong>Fecha préstamo:</strong>
+                                    <span th:text="${#temporals.format(prestamo.fechaPrestamo, 'dd/MM/yyyy')}"></span>
+                                </div>
+                                <div class="info-row">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <strong>Fecha devolución:</strong>
+                                    <span th:text="${#temporals.format(prestamo.fechaDevolucion, 'dd/MM/yyyy')}"></span>
+                                </div>
+                                <div class="info-row" th:if="${prestamo.comentario}">
+                                    <i class="fas fa-comment"></i>
+                                    <strong>Comentario:</strong>
+                                    <span th:text="${prestamo.comentario}"></span>
+                                </div>
+                            </div>
+
+                            <!-- Lista de libros -->
+                            <div class="libros-list">
+                                <h4><i class="fas fa-books"></i> Libros prestados:</h4>
+                                <div th:each="detalle : ${prestamo.detalles}" class="libro-item">
+                                    <strong th:text="${detalle.libro.titulo}"></strong>
+                                    <br>
+                                    <small th:text="'Autor: ' + ${detalle.libro.autor.nombre}"></small>
+                                </div>
+                            </div>
+
+                            <!-- Días restantes -->
+                            <div th:if="${diasRestantes[prestamo.idPrestamo] != null}"
+                                 class="dias-restantes"
+                                 th:classappend="${diasRestantes[prestamo.idPrestamo] < 0} ? 'vencido' : 
+                                                (${diasRestantes[prestamo.idPrestamo] <= 3} ? 'alerta' : 'normal')">
+                                <span th:if="${diasRestantes[prestamo.idPrestamo] > 0}">
+                                    <i class="fas fa-hourglass-half"></i>
+                                    <span th:text="${diasRestantes[prestamo.idPrestamo]}"></span> días restantes
+                                </span>
+                                <span th:if="${diasRestantes[prestamo.idPrestamo] == 0}">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    ¡Vence hoy!
+                                </span>
+                                <span th:if="${diasRestantes[prestamo.idPrestamo] < 0}">
+                                    <i class="fas fa-times-circle"></i>
+                                    Vencido hace <span th:text="${Math.abs(diasRestantes[prestamo.idPrestamo])}"></span> días
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Préstamos Entregados -->
+                <div th:if="${not #lists.isEmpty(prestamosEntregados)}">
+                    <h3 class="section-title">
+                        <i class="fas fa-check-circle"></i>
+                        Préstamos Entregados
+                    </h3>
+                    <div class="prestamos-grid">
+                        <div th:each="prestamo : ${prestamosEntregados}" class="prestamo-card entregado">
+                            
+                            <div class="prestamo-header">
+                                <div class="prestamo-id">
+                                    Préstamo #<span th:text="${prestamo.idPrestamo}"></span>
+                                </div>
+                                <div class="estado-badge estado-entregado">
+                                    <i class="fas fa-check"></i> Entregado
+                                </div>
+                            </div>
+
+                            <div class="prestamo-info">
+                                <div class="info-row">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <strong>Fecha préstamo:</strong>
+                                    <span th:text="${#temporals.format(prestamo.fechaPrestamo, 'dd/MM/yyyy')}"></span>
+                                </div>
+                                <div class="info-row">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <strong>Fecha devolución esperada:</strong>
+                                    <span th:text="${#temporals.format(prestamo.fechaDevolucion, 'dd/MM/yyyy')}"></span>
+                                </div>
+                                <div class="info-row" th:if="${prestamo.fechaEntrega}">
+                                    <i class="fas fa-hand-holding"></i>
+                                    <strong>Fecha entrega:</strong>
+                                    <span th:text="${#temporals.format(prestamo.fechaEntrega, 'dd/MM/yyyy')}"></span>
+                                </div>
+                                <div class="info-row" th:if="${prestamo.comentario}">
+                                    <i class="fas fa-comment"></i>
+                                    <strong>Comentario:</strong>
+                                    <span th:text="${prestamo.comentario}"></span>
+                                </div>
+                            </div>
+
+                            <!-- Lista de libros -->
+                            <div class="libros-list">
+                                <h4><i class="fas fa-books"></i> Libros entregados:</h4>
+                                <div th:each="detalle : ${prestamo.detalles}" class="libro-item">
+                                    <strong th:text="${detalle.libro.titulo}"></strong>
+                                    <br>
+                                    <small th:text="'Autor: ' + ${detalle.libro.autor.nombre}"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sin préstamos -->
+                <div th:if="${#lists.isEmpty(prestamosActivos) and #lists.isEmpty(prestamosEntregados)}" class="no-prestamos">
+                    <i class="fas fa-book-open"></i>
+                    <h3>No tienes préstamos registrados</h3>
+                    <p>¡Explora nuestro catálogo y realiza tu primer préstamo!</p>
+                    <a href="/home" class="btn-catalogo">
+                        <i class="fas fa-search"></i> Explorar Catálogo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

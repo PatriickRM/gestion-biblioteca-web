@@ -23,7 +23,7 @@ public class RedireccionConfig implements AuthenticationSuccessHandler {
                                             
         if (roles.contains("ROLE_ADMIN")) {
             response.sendRedirect("/index");
-        } else if (roles.contains("ROLE_LECTOR")) {
+        } else if (roles.contains("ROLE_ESTUDIANTE")) {
             response.sendRedirect("/home");
         } else {
             response.sendRedirect("/login?error=role");

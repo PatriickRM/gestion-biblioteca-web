@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.webapp.biblioteca.springboot_webapp.models.Usuario;
 
-public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
-    Usuario findByUsername(String username);
+
+public interface UsuarioRepository extends CrudRepository<Usuario, Integer>,UsuarioRepositoryCustom {
+    Usuario findByUsername(String username); 
 }

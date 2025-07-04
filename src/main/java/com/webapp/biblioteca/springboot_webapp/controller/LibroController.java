@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import com.webapp.biblioteca.springboot_webapp.models.Libro;
 import com.webapp.biblioteca.springboot_webapp.models.Resena;
@@ -46,6 +48,7 @@ public class LibroController {
     private ResenaService resenaService;
     @Autowired
     private UsuarioService usuarioService;
+
 
 
     @GetMapping("/listar")
@@ -157,9 +160,8 @@ public class LibroController {
 
         if (principal != null) {
             Usuario usuario = usuarioService.buscarPorUsername(principal.getName());
-            model.addAttribute("usuario", usuario);
+            model.addAttribute("usuarioActual", usuario);
         }
-        model.addAttribute("extraClass", "detalle-libro");
         
         return "libro-detalle"; 
     }
@@ -172,4 +174,5 @@ public class LibroController {
         resenaService.guardarResena(resena);
         return "redirect:/libros/" + id;
     }
+    
 }

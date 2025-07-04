@@ -3,9 +3,33 @@
     <div class="header">
       <div class="left">
         <h1>Gestion de Usuarios</h1>
-		  <p><a th:href="@{/usuarios/nuevo}" class="status pending">Nuevo Usuario +</a></p>
+		  <p>
+			<a th:href="@{/usuarios/nuevo}" class="status pending">Nuevo Usuario +</a>
+			<!--  BOTÓN DE REPORTE PDF -->
+			<a href="/usuarios/reportes" target="_blank" class="btn-reporte" style="margin-left: 10px;">📄 Reporte PDF</a>
+		</p>
         </div>
     </div>
+	
+	<!-- FORMULARIO DE FILTRO POR ROL -->
+	<!-- Filtro de búsqueda por rol con mejor estilo -->
+	<div class="filtro-usuarios">
+	  <form th:action="@{/usuarios}" method="get" class="form-filtro-usuarios">
+	    <label for="rol"><i class='bx bx-filter'></i> <strong>Filtrar por Rol:</strong></label>
+	    <select name="rol" id="rol" class="select-rol">
+	      <option th:value="--SELECCIONAR--" th:selected="${rol == '--SELECCIONAR--'}">Todos</option>
+	      <option th:each="r : ${roles}"
+	              th:value="${r.nombreRol}"
+	              th:selected="${r.nombreRol == rol}">
+	        [[${r.nombreRol}]]
+	      </option>
+	    </select>
+	    <button type="submit" class="btn-filtrar">Buscar</button>
+	  </form>
+	</div>
+
+
+	
     <div class="bottom-data">
         <div class="orders">
             <div class="header">

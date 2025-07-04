@@ -1,0 +1,48 @@
+<html layout:decorate="~{layouts/layout}">
+<main layout:fragment="contenido">
+
+    <div class="header">
+        <div class="left">
+            <h1>Gestión de Configuración</h1>
+        </div>
+    </div>
+
+    <!-- Formulario para registrar nueva categoría -->
+    <div class="filtro-usuarios">
+        <form th:action="@{/configuracion/guardar}" method="post" th:object="${categoria}" class="form-filtro-usuarios">
+            <label for="nombre_categoria"><i class='bx bx-plus-circle'></i> <strong>Nueva Categoría:</strong></label>
+            <input type="text" th:field="*{nombre_categoria}" id="nombre_categoria" placeholder="Ej. Literatura" required />
+            <button type="submit" class="btn-filtrar">Registrar</button>
+        </form>
+    </div>
+
+    <!-- Mensaje de error si existe -->
+    <div th:if="${error != null}" class="mensaje-error" th:text="${error}" style="color:red; margin-top:10px;"></div>
+
+    <!-- Tabla de categorías existentes -->
+    <div class="bottom-data">
+        <div class="orders">
+            <div class="header">
+                <i class='bx bx-list-ul'></i>
+                <h3>Categorías Registradas</h3>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre de Categoría</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cat : ${categorias}">
+                    <td th:text="${cat.id_categoria}">1</td>
+                    <td th:text="${cat.nombre_categoria}">Literatura</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+<script th:src="@{/js/index.js}"></script>
+</html>

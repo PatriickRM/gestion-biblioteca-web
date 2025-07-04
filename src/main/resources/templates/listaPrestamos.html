@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Listado de Préstamos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/listaPrestamo.css}" />
+</head>
+<body>
+<main layout:fragment="contenido">
+    <h1>Listado de Préstamos</h1>
+
+    <div class="top-bar">
+        <div class="botones-acciones">
+            <a class="btn-agregar" th:href="@{/prestamos/nuevo}">
+                <i class="fa-solid fa-plus"></i> Agregar Préstamo
+            </a>
+            <a th:href="@{/prestamos/reportes}" class="btn-reporte">
+                📄 Generar Reporte
+            </a>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Libro(s)</th>
+                    <th>F. Préstamo</th>
+                    <th>F. Devolución</th>
+                    <th>F. Entrega</th>
+                    <th>Estado</th>
+                    <th>Comentario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${prestamos}">
+                    <td>
+                        <strong th:text="${p.usuario.nombres}"></strong><br>
+                        <span class="datos-extra" th:text="${p.usuario.correo}"></span><br>
+                        <span class="datos-extra" th:text="${p.usuario.telefono}"></span>
+                    </td>
+                    <td>
+                        <ul>
+                            <li th:each="d : ${p.detalles}" th:text="${d.libro.titulo}"></li>
+                        </ul>
+                    </td>
+                    <td th:text="${p.fechaPrestamo}"></td>
+                    <td th:text="${p.fechaDevolucion}"></td>
+                    <td th:text="${p.fechaEntrega != null ? p.fechaEntrega : '-'}"></td>
+                    <td><span class="estado" th:classappend=" ${p.estado}" th:text="${p.estado}"></span></td>
+                    <td th:text="${p.comentario}"></td>
+                    <td class="acciones">
+                        <form th:action="@{/prestamos/devolver/{id}(id=${p.idPrestamo})}" method="post" class="form-devolver">
+                            <button type="submit" class="devolver" th:disabled="${p.estado == 'Entregado'}">
+                                <i class="fa-solid fa-rotate-left"></i> Devolver
+                            </button>
+                        </form>
+                        <form th:action="@{/prestamos/eliminar/{id}(id=${p.idPrestamo})}" method="post">
+                            <button type="submit" class="eliminar">
+                                <i class="fa-solid fa-trash"></i> Eliminar
+                            </button>
+                        </form>
+                        <button class="detalles" onclick="showModal(this)" 
+                                th:attr="data-id=${p.idPrestamo},
+                                         data-usuario-nombres=${p.usuario.nombres},
+                                         data-usuario-apellidos=${p.usuario.apellidos},
+                                         data-usuario-dni=${p.usuario.dni},
+                                         data-usuario-correo=${p.usuario.correo},
+                                         data-usuario-telefono=${p.usuario.telefono},
+                                         data-usuario-username=${p.usuario.username},
+                                         data-fecha-prestamo=${p.fechaPrestamo},
+                                         data-fecha-devolucion=${p.fechaDevolucion},
+                                         data-fecha-entrega=${p.fechaEntrega},
+                                         data-estado=${p.estado},
+                                         data-comentario=${p.comentario}">
+                            <i class="fa-solid fa-eye"></i> Ver Detalles
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de Detalles -->
+    <div id="detalleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalles del Préstamo</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="info-grid">
+                    <!-- Información del Usuario -->
+                    <div class="info-section">
+                        <h3>Información del Usuario</h3>
+                        <div class="info-item">
+                            <span class="info-label">ID Préstamo:</span>
+                            <span class="info-value" id="modal-id"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nombres:</span>
+                            <span class="info-value" id="modal-nombres"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Apellidos:</span>
+                            <span class="info-value" id="modal-apellidos"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">DNI:</span>
+                            <span class="info-value" id="modal-dni"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Correo:</span>
+                            <span class="info-value" id="modal-correo"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Teléfono:</span>
+                            <span class="info-value" id="modal-telefono"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Usuario:</span>
+                            <span class="info-value" id="modal-username"></span>
+                        </div>
+                    </div>
+
+                    <!-- Información del Préstamo -->
+                    <div class="info-section">
+                        <h3>Información del Préstamo</h3>
+                        <div class="info-item">
+                            <span class="info-label">Fecha Préstamo:</span>
+                            <span class="info-value" id="modal-fecha-prestamo"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fecha Devolución:</span>
+                            <span class="info-value" id="modal-fecha-devolucion"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fecha Entrega:</span>
+                            <span class="info-value" id="modal-fecha-entrega"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Estado:</span>
+                            <span class="info-value">
+                                <span class="status-badge" id="modal-estado"></span>
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Comentario:</span>
+                            <span class="info-value" id="modal-comentario"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Libros Prestados -->
+                <div class="books-section">
+                    <h3>Libros Prestados</h3>
+                    <div class="books-grid" id="modal-libros">
+                        <!-- Los libros se cargarán dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showModal(button) {
+            // Obtener datos del préstamo
+            const id = button.getAttribute('data-id');
+            const nombres = button.getAttribute('data-usuario-nombres');
+            const apellidos = button.getAttribute('data-usuario-apellidos');
+            const dni = button.getAttribute('data-usuario-dni');
+            const correo = button.getAttribute('data-usuario-correo');
+            const telefono = button.getAttribute('data-usuario-telefono');
+            const username = button.getAttribute('data-usuario-username');
+            const fechaPrestamo = button.getAttribute('data-fecha-prestamo');
+            const fechaDevolucion = button.getAttribute('data-fecha-devolucion');
+            const fechaEntrega = button.getAttribute('data-fecha-entrega');
+            const estado = button.getAttribute('data-estado');
+            const comentario = button.getAttribute('data-comentario');
+
+            // Llenar el modal con los datos
+            document.getElementById('modal-id').textContent = id;
+            document.getElementById('modal-nombres').textContent = nombres;
+            document.getElementById('modal-apellidos').textContent = apellidos;
+            document.getElementById('modal-dni').textContent = dni;
+            document.getElementById('modal-correo').textContent = correo;
+            document.getElementById('modal-telefono').textContent = telefono;
+            document.getElementById('modal-username').textContent = username;
+            document.getElementById('modal-fecha-prestamo').textContent = fechaPrestamo;
+            document.getElementById('modal-fecha-devolucion').textContent = fechaDevolucion;
+            document.getElementById('modal-fecha-entrega').textContent = fechaEntrega || 'No entregado';
+            document.getElementById('modal-comentario').textContent = comentario || 'Sin comentarios';
+
+            // Configurar el estado con su clase CSS
+            const estadoElement = document.getElementById('modal-estado');
+            estadoElement.textContent = estado;
+            estadoElement.className = 'status-badge';
+            
+            if (estado === 'Prestado') {
+                estadoElement.classList.add('status-prestado');
+            } else if (estado === 'Entregado') {
+                estadoElement.classList.add('status-entregado');
+            } else if (estado === 'Vencido') {
+                estadoElement.classList.add('status-vencido');
+            }
+
+            // Cargar libros via AJAX
+            loadLibros(id);
+
+            // Mostrar modal
+            document.getElementById('detalleModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('detalleModal').style.display = 'none';
+        }
+
+        function loadLibros(prestamoId) {
+            // Hacer una petición AJAX para obtener los detalles de los libros
+            fetch(`/prestamos/detalle/${prestamoId}/libros`)
+                .then(response => response.json())
+                .then(libros => {
+                    const librosContainer = document.getElementById('modal-libros');
+                    librosContainer.innerHTML = '';
+                    
+                    libros.forEach(libro => {
+                        const imagenSrc = libro.imagen ? `/images/${libro.imagen}` : '/images/libro-default.png';
+                        const bookCard = document.createElement('div');
+                        bookCard.className = 'book-card';
+                        bookCard.innerHTML = `
+                            <div class="book-image">
+                                <img src="${imagenSrc}" alt="${libro.titulo}">
+                            </div>
+                            <div class="book-info">
+                                <div class="book-title">${libro.titulo}</div>
+                                <div class="book-detail"><strong>Autor:</strong> ${libro.autor.nombre}</div>
+                                <div class="book-detail"><strong>Editorial:</strong> ${libro.editorial}</div>
+                                <div class="book-detail"><strong>Año:</strong> ${libro.anio_publicacion}</div>
+                                <div class="book-detail"><strong>ISBN:</strong> ${libro.isbn}</div>
+                                <div class="book-detail"><strong>Categoría:</strong> ${libro.categoria.nombre}</div>
+                                <div class="book-detail"><strong>Estado:</strong> ${libro.estado}</div>
+                            </div>
+                        `;
+                        librosContainer.appendChild(bookCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar libros:', error);
+                    document.getElementById('modal-libros').innerHTML = '<p>Error al cargar los libros</p>';
+                });
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            const modal = document.getElementById('detalleModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+
+    <script th:src="@{/js/prestamo.js}"></script>
+</main>
+</body>
+</html>

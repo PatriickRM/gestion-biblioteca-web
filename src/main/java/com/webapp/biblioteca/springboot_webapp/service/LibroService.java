@@ -19,5 +19,6 @@ public interface LibroService {
     public List<String> obtenerAutores();
     public List<String> obtenerEditoriales();
     public List<String> obtenerCategorias();
+    long contarLibros();
     Page<Libro> buscarConFiltros(Integer year, String author, String editorial, String categoria, String nombre, Pageable pageable);
 }

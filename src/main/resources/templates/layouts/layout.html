@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/usuarios.css}" />
 	<link rel="stylesheet" th:href="@{/css/style.css}" />
     <title layout:title-pattern="Layout ">Biblioteca</title>
 </head>
@@ -20,9 +21,8 @@
         <li><a th:href="@{/index}"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
         <li><a th:href="@{/usuarios}"><i class='bx bx-group'></i>Usuarios</a></li>
         <li><a th:href="@{/libros}"><i class='bx bxs-book'></i>Libros</a></li>
-        <li><a href="#"><i class='bx bx-transfer'></i>Prestamos</a></li>
-        <li><a href="#"><i class='bx bx-bookmark'></i>Reservas</a></li>
-        <li><a href="#"><i class='bx bx-cog'></i>Configuracion</a></li>
+        <li><a th:href="@{/prestamos/lista}"><i class='bx bx-transfer'></i>Prestamos</a></li>
+        <li><a th:href="@{/configuracion}"><i class='bx bx-cog'></i>Configuracion</a></li>
     </ul>
     <ul class="side-menu">
         <li>

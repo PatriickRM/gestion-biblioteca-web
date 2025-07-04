@@ -45,6 +45,14 @@ public class UsuarioServiceImp implements UsuarioService {
         return usuarioRepository.findByUsername(username);
     }
 
-    
+    @Override
+	public List<Usuario> buscarporRol(String rol) {
+		return usuarioRepository.buscarporRol(rol); // Buscar usuarios por rol
+	}
+
+    @Override
+    public long contarUsuarios() {
+        return usuarioRepository.count();
+    }
 
 }

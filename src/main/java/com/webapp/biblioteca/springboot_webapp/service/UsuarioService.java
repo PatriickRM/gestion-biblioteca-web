@@ -12,4 +12,6 @@ public interface UsuarioService {
     Usuario BuscarUsuarioPorId(Integer id);
     List<Usuario> ListarUsuarios();
     Usuario buscarPorUsername(String username);
+    List<Usuario> buscarporRol(String rol); // Buscar usuarios solo por rol
+    long contarUsuarios();
 }

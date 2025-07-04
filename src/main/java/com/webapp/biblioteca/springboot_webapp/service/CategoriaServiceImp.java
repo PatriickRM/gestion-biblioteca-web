@@ -19,4 +19,10 @@ public class CategoriaServiceImp implements CategoriaService {
         return (List<Categoria>) categoriaRepository.findAll();
     }
 
+	@Override
+	public void registrarCategoria(Categoria categoria) {
+		categoriaRepository.save(categoria);
+		
+	}
+
 }

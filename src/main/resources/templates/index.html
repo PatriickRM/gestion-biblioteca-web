@@ -7,20 +7,20 @@
     </div>
 
     <ul class="insights">
+      <<li>
+	    <i class='bx bx-show-alt'></i>
+	    <span class="info">
+	      <h3 th:text="${totalUsuarios}">0</h3>
+	      <p>Cantidad de Usuarios</p>
+	    </span>
+	    </li>
       <li>
-        <i class='bx bx-calendar-check'></i>
-        <span class="info">
-          <h3>1,074</h3>
-          <p>Prestamos Hechos</p>
-        </span>
-      </li>
-      <li>
-        <i class='bx bx-show-alt'></i>
-        <span class="info">
-          <h3>3,944</h3>
-          <p>Cantidad de Lectores</p>
-        </span>
-      </li>
+	    <i class='bx bx-book'></i> 
+	    <span class="info">
+	      <h3 th:text="${totalLibros}">0</h3>
+	      <p>Cantidad de Libros</p>
+	    </span>
+	  </li>
       <li>
         <i class='bx bx-line-chart'></i>
         <span class="info">
@@ -34,31 +34,27 @@
       <div class="orders">
         <div class="header">
           <i class='bx bx-receipt'></i>
-          <h3>Prestamos Recientes</h3>
+          <h3>Préstamos Recientes</h3>
         </div>
+
         <table>
           <thead>
             <tr>
               <th>Usuario</th>
-              <th>Fecha Limite</th>
+              <th>Fecha Préstamo</th>
+              <th>Fecha Límite</th>
               <th>Estado</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><p>Juan Perez</p></td>
-              <td>14-08-2025</td>
-              <td><span class="status completed">Devuelto</span></td>
-            </tr>
-            <tr>
-              <td><p>Juan Perez</p></td>
-              <td>14-08-2025</td>
-              <td><span class="status pending">Pendiente</span></td>
-            </tr>
-            <tr>
-              <td><p>Juan Perez</p></td>
-              <td>14-08-2025</td>
-              <td><span class="status completed">Devuelto</span></td>
+            <tr th:each="prestamo : ${prestamosRecientes}">
+              <td><p th:text="${prestamo.usuario.nombres}">Nombre Usuario</p></td>
+              <td th:text="${prestamo.fechaPrestamo != null ? #temporals.format(prestamo.fechaPrestamo, 'dd-MM-yyyy') : ''}">Fecha Préstamo</td>
+              <td th:text="${prestamo.fechaFormateada}">Fecha Límite</td>
+              <td>
+                <span th:classappend="${prestamo.estado == 'Devuelto'} ? 'status completed' : 'status pending'"
+                      th:text="${prestamo.estado}">Estado</span>
+              </td>
             </tr>
           </tbody>
         </table>

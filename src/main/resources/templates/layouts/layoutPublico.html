@@ -33,16 +33,23 @@
         <div class="profile">
             <div class="info">
                 <img th:src="@{/images/user-avatar.png}" alt="Perfil">
-                <div>
-                    <p th:text="${usuario.nombres} +' '+${usuario.apellidos}">Nombre</p>
-                    <p th:text="${usuario.rol.nombreRol}">Rol</p>
+                <div th:if="${usuarioActual != null}">
+                    <p th:text="${usuarioActual.nombres + ' ' + usuarioActual.apellidos}">Nombre</p>
+                    <p th:text="${usuarioActual.rol.nombreRol}">Rol</p>
+                </div>
+                <div th:unless="${usuarioActual != null}">
+                    <p>Invitado</p>
+                    <p>Sin rol</p>
                 </div>
             </div>
             <i class='bx bx-chevron-down'></i>
             <div class="profile-dropdown">
-                <a href="#">Mi perfil</a>
-                <a href="#">Mis préstamos</a>
-                <a th:href="@{/logout}">Cerrar sesión</a>
+                <a href="#" th:if="${usuarioActual != null}">Mi perfil</a>
+                <a href="/mis-prestamos" class="nav-link" th:if="${usuarioActual != null}">
+                    <i class="fas fa-book-reader"></i> Mis Préstamos
+                </a>
+                <a th:href="@{/logout}" th:if="${usuarioActual != null}">Cerrar sesión</a>
+                <a th:href="@{/login}" th:if="${usuarioActual == null}">Iniciar sesión</a>
             </div>
         </div>
     </div>
@@ -59,7 +66,7 @@
     <div class="footer-left">
         <i class='bx bx-book-open'></i>
         <p>MiBiblioteca<br><span class="location">Av. Procéres de la Independencia 444 - SJL</span></p>
-    </div>
+    </div>  
     <div class="footer-center">
         © 2025 MiBiblioteca. Todos los derechos reservados.
     </div>
